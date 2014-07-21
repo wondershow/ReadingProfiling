@@ -17,12 +17,14 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 			if(body.length === 0) {
 				alert("There are no any divs in the page.");
 			} else {
+				alert("msg3");
 				body[0].addEventListener("click",OnMouseMove, false);
 			}
 			//document.addEventListener();
 		break;
 	}
 });
+
 
 
 /***
@@ -35,33 +37,45 @@ function getAndDisplayXandY(e){
  if ((evt.clientX || evt.clientY) &&
      document.body &&
      document.body.scrollLeft!=null) {
-  clickX = evt.clientX + document.body.scrollLeft;
-  clickY = evt.clientY + document.body.scrollTop;
+	clickX = evt.clientX + document.body.scrollLeft;
+	 clickY = evt.clientY + document.body.scrollTop;
  }
  if ((evt.clientX || evt.clientY) &&
      document.compatMode=='CSS1Compat' && 
      document.documentElement && 
      document.documentElement.scrollLeft!=null) {
-  clickX = evt.clientX + document.documentElement.scrollLeft;
-  clickY = evt.clientY + document.documentElement.scrollTop;
+	clickX = evt.clientX + document.documentElement.scrollLeft;
+	clickY = evt.clientY + document.documentElement.scrollTop;
  }
  if (evt.pageX || evt.pageY) {
-  clickX = evt.pageX;
-  clickY = evt.pageY;
+	clickX = evt.pageX;
+	clickY = evt.pageY;
  }
 
- alert (evt.type.toUpperCase() + ' mouse event1111:'
-  +'\n pageX = ' + clickX
-  +'\n pageY = ' + clickY 
-  +'\n clientX = ' + evt.clientX
-  +'\n clientY = '  + evt.clientY 
-  +'\n screenX = ' + evt.screenX 
-  +'\n screenY = ' + evt.screenY
- )
+ alert (evt.type.toUpperCase() + ' mouse event2222:'
+		+'\n pageX = ' + clickX
+		+'\n pageY = ' + clickY 
+		+'\n clientX = ' + evt.clientX
+		+'\n clientY = '  + evt.clientY 
+		+'\n screenX = ' + evt.screenX 
+		+'\n screenY = ' + evt.screenY)
 
  alert("here you are");
  var element = document.elementFromPoint(evt.clientX, evt.clientY);
  alert(element.type);
+
+
+  $(document).ready(function(){
+            $('html').mousemove(function(event){
+                console.log("mouse move X:"+event.pageX+" Y:"+event.pageY);
+            });
+            $('html').click(function(event){
+                console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
+            });
+            $('html').keyup(function(event){
+                console.log("keyboard event: key pressed "+event.keyCode);
+            });
+  });
 
  return false;
 }
