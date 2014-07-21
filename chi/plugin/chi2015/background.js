@@ -39,3 +39,10 @@ var colorDivs = function() {
 		chrome.browserAction.setBadgeText({text: "red!"});
 	});
 }
+
+
+alert("body.test2222");
+console.log("Just for rum2222")
+
+
+

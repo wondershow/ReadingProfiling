@@ -18,7 +18,7 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 				alert("There are no any divs in the page.");
 			} else {
 				alert("msg3");
-				body[0].addEventListener("click",OnMouseMove, false);
+				body[0].addEventListener("click",getAndDisplayXandY, false);
 			}
 			//document.addEventListener();
 		break;
@@ -52,7 +52,7 @@ function getAndDisplayXandY(e){
 	clickY = evt.pageY;
  }
 
- alert (evt.type.toUpperCase() + ' mouse event2222:'
+ alert (evt.type.toUpperCase() + ' mouse event3333:'
 		+'\n pageX = ' + clickX
 		+'\n pageY = ' + clickY 
 		+'\n clientX = ' + evt.clientX
@@ -123,3 +123,18 @@ function OnMouseMove (event) {
                 overElem.style.border = "3px solid red";    // draws selection border
             }
 }
+
+
+$("body").append('<p>Test6666</p>');
+
+
+// The following code send data to a google docs sheet
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "https://script.google.com/macros/s/AKfycbyFQXA49rONAqprRWfb6Ro5xTKW8ECFXp448FmhSbCul_QG88lb/exec?F1=whc3333&F2=zcd4444", true);
+xhr.onreadystatechange = function() {
+	 if (xhr.readyState == 4) {
+		alert("Okay");
+		// paste your code here 
+     }
+}
+xhr.send();

@@ -27,8 +27,8 @@
 
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"]
+      "js": ["jquery.min.js","content.js"],
+      "matches": ["http://*/*", "https://*/*"]
     }
   ],
 
