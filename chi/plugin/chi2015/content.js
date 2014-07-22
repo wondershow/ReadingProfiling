@@ -128,6 +128,17 @@ function OnMouseMove (event) {
 $("body").append('<p>Test6666</p>');
 
 
+$.ajax({
+  type: "GET",
+  url: "https://script.google.com/macros/s/AKfycbyFQXA49rONAqprRWfb6Ro5xTKW8ECFXp448FmhSbCul_QG88lb/exec?F1=abc&F2=def",
+  cache: false,
+  success: function(data){
+	 alert("success")
+  }
+});
+
+
+/*
 // The following code send data to a google docs sheet
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "https://script.google.com/macros/s/AKfycbyFQXA49rONAqprRWfb6Ro5xTKW8ECFXp448FmhSbCul_QG88lb/exec?F1=whc3333&F2=zcd4444", true);
@@ -138,3 +149,4 @@ xhr.onreadystatechange = function() {
      }
 }
 xhr.send();
+*/
