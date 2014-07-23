@@ -13,6 +13,10 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 					divs[i].style.backgroundColor = message.color;
 				}
 			}*/
+			
+			alert("I am here in the listner");
+
+
 			var body = document.querySelectorAll("body");
 			if(body.length === 0) {
 				alert("There are no any divs in the page.");
@@ -21,6 +25,17 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 				body[0].addEventListener("click",getAndDisplayXandY, false);
 			}
 			//document.addEventListener();
+
+
+
+
+			var windows = document.querySelectorAll("window")
+			if(windows.length == 0)
+				alert("sorry, there is no window in this html conttext");
+			else
+				alert("There are " + windows.length + "windows in this html conttext");
+
+
 		break;
 	}
 });
@@ -95,6 +110,8 @@ function getAndDisplayElementName(e) {
 	then an empty is returned. 
 	TODO: avoid returning an empty element. 
 **/
+
+/*
 function OnMouseMove (event) {
             var posX = event.clientX, posY = event.clientY;
 
@@ -122,7 +139,7 @@ function OnMouseMove (event) {
                 origBorder = overElem.style.border; // stores the border settings of the selected element
                 overElem.style.border = "3px solid red";    // draws selection border
             }
-}
+}*/
 
 
 $("body").append('<p>Test6666</p>');
@@ -160,8 +177,13 @@ xhr.send();
 	The following code get mouse trajectory and put (x,y,timestamp) 
 	into a json array. 
 **/
-/*
 alert('lcy')
+
+
+$(window).scroll(function(event) {
+	console.log("new windows position : x " + window.pageXOffset + ", y " + window.pageYOffset);
+});
+
 var jsonObj = {};
 jsonObj.itemlist=[];
 
@@ -176,16 +198,24 @@ $("body").mousemove(function(event) {
 	var len = jsonObj.itemlist.length;
 	//if(len % 100 == 0)
 	//	alert('len is ' + len);
-	console.log('x:' + event.pageX + ", y " + event.pageY + ", timestampe" + new_obj['timestamp']);
+	//console.log('x:' + event.pageX + ", y " + event.pageY + ", timestampe" + new_obj['timestamp']);
+
+	console.log('pageX:=' + event.pageX + ',pageY:=' + event.pageY + ", clientX = " + event.clientX + ", clientY = " + event.clientY + ", screenX = " + event.screenX + ", screenY = " + event.screenY);
 })
-*/
+
+
+
+
+
+
+
 
 
 
 
 
 	/**The following code illustrates how to submit json arrays to a google spread sheet web apps, on the google side, the code can decode the json array**/
-    alert('This demo illustrates how to submit json arrays to a google spread sheet web apps, on the google side, the code can decode the json array');
+    /*alert('This demo illustrates how to submit json arrays to a google spread sheet web apps, on the google side, the code can decode the json array');
 	var jsonObj = {};
 	jsonObj.itemlist=[];
     var new_obj = {'F1':'ajaxGSU3', 'F2':'ajaxGSU4', 'F3': 'test'};
@@ -204,4 +234,4 @@ $("body").mousemove(function(event) {
 			alert("Status: " + textStatus); alert("Error: " + errorThrown); 
 		   },
            data: JSON.stringify(jsonObj)
-	});
+	});*/

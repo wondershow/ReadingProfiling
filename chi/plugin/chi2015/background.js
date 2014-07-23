@@ -13,6 +13,7 @@ chrome.omnibox.onInputEntered.addListener(function(text) {
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.type) {
         case "color-divs":
+			alert("start colorDivs");
             colorDivs();
         break;
     }
@@ -40,9 +41,8 @@ var colorDivs = function() {
 	});
 }
 
+alert("body.333333");
 
-alert("body.test2222");
-console.log("Just for rum2222")
 
 
 
