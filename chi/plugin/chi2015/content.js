@@ -127,7 +127,8 @@ function OnMouseMove (event) {
 
 $("body").append('<p>Test6666</p>');
 
-
+/** The following code illustrates how to use jQuery to submit an ajax get*/
+/*
 $.ajax({
   type: "GET",
   url: "https://script.google.com/macros/s/AKfycbyFQXA49rONAqprRWfb6Ro5xTKW8ECFXp448FmhSbCul_QG88lb/exec?F1=abc&F2=def",
@@ -136,11 +137,13 @@ $.ajax({
 	 alert("success")
   }
 });
+*/
 
 
-/*
-// The following code send data to a google docs sheet
-var xhr = new XMLHttpRequest();
+
+ 
+/*The following code send data to a google docs sheet */
+/*var xhr = new XMLHttpRequest(); 
 xhr.open("GET", "https://script.google.com/macros/s/AKfycbyFQXA49rONAqprRWfb6Ro5xTKW8ECFXp448FmhSbCul_QG88lb/exec?F1=whc3333&F2=zcd4444", true);
 xhr.onreadystatechange = function() {
 	 if (xhr.readyState == 4) {
@@ -149,4 +152,54 @@ xhr.onreadystatechange = function() {
      }
 }
 xhr.send();
+*/
+
+
+
+/*
+alert('4444');
+ var sendInfo = {
+           F1: 'ajaxFFFF1',
+           F2: 'ajaxFFFF2',
+       };
+
+$.ajax({
+           type: "POST",
+           url: "https://script.google.com/macros/s/AKfycbyNQLA7ZiDQMnMorpW6kyqIcmA5CdDe4Ho_39rz4Whj1nB_hTQ/exec",
+           dataType: "json",
+           success: function (msg) {
+               alert('success')
+           },
+		   error: function(XMLHttpRequest, textStatus, errorThrown) { 
+			alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+		   },
+           data: sendInfo
+ });*/
+
+
+
+
+
+/**
+	The following code get mouse trajectory and put (x,y,timestamp) 
+	into a json array. 
+**/
+/*
+alert('lcy')
+var jsonObj = {};
+jsonObj.itemlist=[];
+
+var d = new Date();
+var n = d.getTime();
+
+$("body").mousemove(function(event) {
+	var d = new Date();
+	var n = d.getTime();
+	var new_obj = {'x':event.pageX, 'y':event.pageY, 'timestamp': n};
+	jsonObj.itemlist.push( new_obj );
+	var len = jsonObj.itemlist.length;
+	//if(len % 100 == 0)
+	//	alert('len is ' + len);
+	console.log('x:' + event.pageX + ", y " + event.pageY + ", timestampe" + new_obj['timestamp']);
+})
 */
