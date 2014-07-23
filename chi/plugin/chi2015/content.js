@@ -156,30 +156,6 @@ xhr.send();
 
 
 
-/*
-alert('4444');
- var sendInfo = {
-           F1: 'ajaxFFFF1',
-           F2: 'ajaxFFFF2',
-       };
-
-$.ajax({
-           type: "POST",
-           url: "https://script.google.com/macros/s/AKfycbyNQLA7ZiDQMnMorpW6kyqIcmA5CdDe4Ho_39rz4Whj1nB_hTQ/exec",
-           dataType: "json",
-           success: function (msg) {
-               alert('success')
-           },
-		   error: function(XMLHttpRequest, textStatus, errorThrown) { 
-			alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-		   },
-           data: sendInfo
- });*/
-
-
-
-
-
 /**
 	The following code get mouse trajectory and put (x,y,timestamp) 
 	into a json array. 
@@ -203,3 +179,29 @@ $("body").mousemove(function(event) {
 	console.log('x:' + event.pageX + ", y " + event.pageY + ", timestampe" + new_obj['timestamp']);
 })
 */
+
+
+
+
+
+	/**The following code illustrates how to submit json arrays to a google spread sheet web apps, on the google side, the code can decode the json array**/
+    alert('This demo illustrates how to submit json arrays to a google spread sheet web apps, on the google side, the code can decode the json array');
+	var jsonObj = {};
+	jsonObj.itemlist=[];
+    var new_obj = {'F1':'ajaxGSU3', 'F2':'ajaxGSU4', 'F3': 'test'};
+    jsonObj.itemlist.push( new_obj );
+	new_obj = {'F1':'ajaxGSU1', 'F2':'ajaxGSU2', 'F3': 'test'};
+	jsonObj.itemlist.push( new_obj );
+
+	$.ajax({
+           type: "POST",
+           url: "https://script.google.com/macros/s/AKfycbyNQLA7ZiDQMnMorpW6kyqIcmA5CdDe4Ho_39rz4Whj1nB_hTQ/exec",
+           dataType: "json",
+           success: function (msg) {
+               alert('success')
+           },
+		   error: function(XMLHttpRequest, textStatus, errorThrown) { 
+			alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+		   },
+           data: JSON.stringify(jsonObj)
+	});
