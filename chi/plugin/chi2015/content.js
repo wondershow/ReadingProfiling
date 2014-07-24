@@ -177,18 +177,15 @@ xhr.send();
 	The following code get mouse trajectory and put (x,y,timestamp) 
 	into a json array. 
 **/
+/*
 alert('lcy')
-
-
-$(window).scroll(function(event) {
-	console.log("new windows position : x " + window.pageXOffset + ", y " + window.pageYOffset);
-});
 
 var jsonObj = {};
 jsonObj.itemlist=[];
 
 var d = new Date();
 var n = d.getTime();
+
 
 $("body").mousemove(function(event) {
 	var d = new Date();
@@ -201,7 +198,29 @@ $("body").mousemove(function(event) {
 	//console.log('x:' + event.pageX + ", y " + event.pageY + ", timestampe" + new_obj['timestamp']);
 
 	console.log('pageX:=' + event.pageX + ',pageY:=' + event.pageY + ", clientX = " + event.clientX + ", clientY = " + event.clientY + ", screenX = " + event.screenX + ", screenY = " + event.screenY);
-})
+})*/
+
+
+
+
+
+/**The following code shows how to get scroll event*/
+/*
+$(window).scroll(function(event) {
+	console.log("new windows position : x " + window.pageXOffset + ", y " + window.pageYOffset);
+});
+*/
+
+
+
+
+
+/**The following code shows how to log mouse click event*/
+/*
+$("body").click(function(event){
+	console.log('click happened at pageX:=' + event.pageX + ',pageY:=' + event.pageY + ", clientX = " + event.clientX + ", clientY = " + event.clientY + ", screenX = " + event.screenX + ", screenY = " + event.screenY);
+});
+*/
 
 
 
