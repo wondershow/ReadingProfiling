@@ -41,8 +41,4 @@ var colorDivs = function() {
 	});
 }
 
-alert("body.333333");
-
-
-
-
+alert("background script loaded");

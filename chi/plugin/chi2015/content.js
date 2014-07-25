@@ -1,3 +1,5 @@
+alert('load content.js')
+
 var selElem = null; // store the currently selected element
 var origBorder = ""; 
 
@@ -177,8 +179,9 @@ xhr.send();
 	The following code get mouse trajectory and put (x,y,timestamp) 
 	into a json array. 
 **/
+
 /*
-alert('lcy')
+alert('lcy111')
 
 var jsonObj = {};
 jsonObj.itemlist=[];
@@ -196,9 +199,8 @@ $("body").mousemove(function(event) {
 	//if(len % 100 == 0)
 	//	alert('len is ' + len);
 	//console.log('x:' + event.pageX + ", y " + event.pageY + ", timestampe" + new_obj['timestamp']);
-
 	console.log('pageX:=' + event.pageX + ',pageY:=' + event.pageY + ", clientX = " + event.clientX + ", clientY = " + event.clientY + ", screenX = " + event.screenX + ", screenY = " + event.screenY);
-})*/
+});*/
 
 
 
@@ -292,3 +294,67 @@ $("body").click(function(event){
 	$(document).ready(function(){
 		$(document).bind("mouseup", Kolich.Selector.mouseup);
 	}); */
+
+
+//console.log($('body').text())
+
+/**
+The following code demos how to get a headline of a news webpage 
+**/
+alert("The following code demos how to get a headline of a news webpage");
+
+var text = '';
+var max_font_size = 0;
+var result = null;
+
+$("h1, h2, h3, h4, h5, h6").filter(function(){
+	if(($(this).text().length>5)&&($(this).text().length<100))
+    {
+		//alert($(this).text());
+        return true;
+    }
+
+}).each(
+
+
+	function(){
+		//alert($(this).css('font-size')+", text = " + $(this).text());
+
+		//alert("$(this).text() = " + $(this).text() + ", font-size="+$(this).css('font-size'));
+		//alert("max_font_size = " + max_font_size);
+		var font_size = $(this).css('font-size').replace('px', '');
+		//alert("font_size = '" + font_size + "'");
+		if( $.isNumeric(font_size) &&   parseInt(font_size) > parseInt(max_font_size)  ) {
+			//alert( (font_size > max_font_size) + ",font_size = " + font_size + ", max_font_size = " + max_font_size );
+			//alert("font_size1111 = '" + font_size + "'");
+			result = $(this);
+			max_font_size = font_size
+		}
+	}
+);
+
+//alert("max_font_size = " + max_font_size);
+
+alert("headline is   " +  $(result).text());
+
+/*
+$('body *').contents().filter(function() { 
+    return (this.nodeType == 3) && this.nodeValue.match(/\S/); 
+}).wrap("<span />")
+*/
+
+$("#dialog-message").dialog({
+    modal: true,
+    draggable: false,
+    resizable: false,
+    position: ['center', 'top'],
+    show: 'blind',
+    hide: 'blind',
+    width: 150,
+    dialogClass: 'ui-dialog-osx',
+    buttons: {
+        "I've read and understand this": function() {
+            $(this).dialog("close");
+        }
+    }
+});
