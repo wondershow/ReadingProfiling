@@ -337,24 +337,56 @@ $("h1, h2, h3, h4, h5, h6").filter(function(){
 
 alert("headline is   " +  $(result).text());
 
+
+//To calculate the position of a dialog box
+var pos = $(result).position();
+var dialog_x = pos.left;
+var dialog_y = pos.top + $(result).height() + 5;
+
+
 /*
 $('body *').contents().filter(function() { 
     return (this.nodeType == 3) && this.nodeValue.match(/\S/); 
 }).wrap("<span />")
 */
 
-$("#dialog-message").dialog({
-    modal: true,
-    draggable: false,
-    resizable: false,
-    position: ['center', 'top'],
-    show: 'blind',
-    hide: 'blind',
-    width: 150,
-    dialogClass: 'ui-dialog-osx',
-    buttons: {
-        "I've read and understand this": function() {
-            $(this).dialog("close");
-        }
-    }
-});
+
+
+
+  var layerNode= document.createElement('div');
+  layerNode.setAttribute('id','dialog');
+  layerNode.setAttribute('title','Basic dialog');
+  var pNode= document.createElement('p');
+  console.log("pNode created"); 
+  pNode.innerHTML  = "just for fun!!!";
+
+  layerNode.appendChild(pNode);
+  $("body").append(layerNode);
+  
+
+  alert("Done");
+  $.fn.exists = function () {
+    return this.length !== 0;
+  }
+
+  alert( "Exists:" + $("#dialog").exists() );
+
+
+  //alert($("#dialog111").length)
+
+  //alert($("#dialog").exists1111());
+  $("#dialog").dialog({
+	  autoOpen: true, 
+	  draggable: true,
+	  resizable: true,
+	  height: 'auto',
+	  width: 500,
+	  zIndex:3999,
+	  modal: false,
+	  background: '#b0de78',
+	  open: function(event, ui) {
+		$(event.target).parent().css('position','fixed');
+		$(event.target).parent().css('top', dialog_x);
+		$(event.target).parent().css('left', dialog_y);
+	  }
+  });
