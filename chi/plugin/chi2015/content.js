@@ -301,7 +301,7 @@ $("body").click(function(event){
 /**
 The following code demos how to get a headline of a news webpage 
 **/
-alert("The following code demos how to get a headline of a news webpage");
+alert("The following code demos how to get a headline of a news webpage and show a dialog box on the tittle");
 
 var text = '';
 var max_font_size = 0;
@@ -340,8 +340,8 @@ alert("headline is   " +  $(result).text());
 
 //To calculate the position of a dialog box
 var pos = $(result).position();
-var dialog_x = pos.left;
-var dialog_y = pos.top + $(result).height() + 5;
+var dialog_x = pos.left;// + $(result).width()/3;
+var dialog_y = pos.top;// + $(result).height() + 5;
 
 
 /*
@@ -355,22 +355,26 @@ $('body *').contents().filter(function() {
 
   var layerNode= document.createElement('div');
   layerNode.setAttribute('id','dialog');
-  layerNode.setAttribute('title','Basic dialog');
+  layerNode.setAttribute('title','Lets start');
+  layerNode.style.backgroundColor = 'white'
+  layerNode.style.opacity = 0.9
   var pNode= document.createElement('p');
   console.log("pNode created"); 
-  pNode.innerHTML  = "just for fun!!!";
+  pNode.innerHTML  = "Please start from the headline";
+  pNode.style.color = 'red';
+  pNode.style.fontSize = "15px";
+  pNode.style.backgroundColor = 'white';
+  
 
   layerNode.appendChild(pNode);
   $("body").append(layerNode);
   
 
-  alert("Done");
   $.fn.exists = function () {
     return this.length !== 0;
   }
 
   alert( "Exists:" + $("#dialog").exists() );
-
 
   //alert($("#dialog111").length)
 
@@ -380,13 +384,22 @@ $('body *').contents().filter(function() {
 	  draggable: true,
 	  resizable: true,
 	  height: 'auto',
-	  width: 500,
+	  width: 200,
 	  zIndex:3999,
 	  modal: false,
-	  background: '#b0de78',
 	  open: function(event, ui) {
 		$(event.target).parent().css('position','fixed');
 		$(event.target).parent().css('top', dialog_x);
 		$(event.target).parent().css('left', dialog_y);
 	  }
   });
+
+
+  //disappear after 3 seconds
+  setTimeout(fade_out, 3000);
+
+  function fade_out() {
+	//div.parentNode.removeChild(div);
+
+	$("#dialog").remove();
+  }
