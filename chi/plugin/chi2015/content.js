@@ -316,7 +316,6 @@ $("h1, h2, h3, h4, h5, h6").filter(function(){
 
 }).each(
 
-
 	function(){
 		//alert($(this).css('font-size')+", text = " + $(this).text());
 
@@ -333,73 +332,13 @@ $("h1, h2, h3, h4, h5, h6").filter(function(){
 	}
 );
 
-//alert("max_font_size = " + max_font_size);
-
-alert("headline is   " +  $(result).text());
-
-
-//To calculate the position of a dialog box
-var pos = $(result).position();
-var dialog_x = pos.left;// + $(result).width()/3;
-var dialog_y = pos.top;// + $(result).height() + 5;
-
-
-/*
-$('body *').contents().filter(function() { 
-    return (this.nodeType == 3) && this.nodeValue.match(/\S/); 
-}).wrap("<span />")
-*/
+if( $(result).text() ) { // if result exists
+	$("body").append("<div id='start_tag' style='position:absolute; top:100px;left:300px' > <font color='red' size='12px' face='serif'> <i> Please start from the headline </i></font> </div>");
+	var destination = $(result).offset();
+	alert("destination: " + destination.top + "," + destination.left);
+	$('#start_tag').css({top: destination.top, left: destination.left});
+	$(result).css({outline : "thick solid #0000FF"});
+}
 
 
 
-
-  var layerNode= document.createElement('div');
-  layerNode.setAttribute('id','dialog');
-  layerNode.setAttribute('title','Lets start');
-  layerNode.style.backgroundColor = 'white'
-  layerNode.style.opacity = 0.9
-  var pNode= document.createElement('p');
-  console.log("pNode created"); 
-  pNode.innerHTML  = "Please start from the headline";
-  pNode.style.color = 'red';
-  pNode.style.fontSize = "15px";
-  pNode.style.backgroundColor = 'white';
-  
-
-  layerNode.appendChild(pNode);
-  $("body").append(layerNode);
-  
-
-  $.fn.exists = function () {
-    return this.length !== 0;
-  }
-
-  alert( "Exists:" + $("#dialog").exists() );
-
-  //alert($("#dialog111").length)
-
-  //alert($("#dialog").exists1111());
-  $("#dialog").dialog({
-	  autoOpen: true, 
-	  draggable: true,
-	  resizable: true,
-	  height: 'auto',
-	  width: 200,
-	  zIndex:3999,
-	  modal: false,
-	  open: function(event, ui) {
-		$(event.target).parent().css('position','fixed');
-		$(event.target).parent().css('top', dialog_x);
-		$(event.target).parent().css('left', dialog_y);
-	  }
-  });
-
-
-  //disappear after 3 seconds
-  setTimeout(fade_out, 3000);
-
-  function fade_out() {
-	//div.parentNode.removeChild(div);
-
-	$("#dialog").remove();
-  }
