@@ -13,7 +13,6 @@ chrome.omnibox.onInputEntered.addListener(function(text) {
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.type) {
         case "color-divs":
-			alert("start colorDivs");
             colorDivs();
         break;
     }
