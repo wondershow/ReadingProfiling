@@ -283,79 +283,35 @@ $("body").click(function(event){
 //console.log($('body').text())
 
 
-
-
-
-
+/**
+Given a paragrah html object,
+return the position of its first html word.
+notice that the position is the vertical offset of the document.
+**/
+function getParaPosition(para) {
+	var html =$(para).html();
+	var firstWord = getFirstWordFromHTML(html);
+	alert("firstWord = " + firstWord);
+	var tmpSpanId = 'tmpSpanStartReadingHint';
+	html = html.replace(firstWord, "<span id='" + tmpSpanId + "'>" + firstWord +  "</span>" );
+	$(para).html(html)
+	var firstSpan = document.getElementById(tmpSpanId);
+	var offset = $(firstSpan).offset();
+	return offset.top;
+}
 
 function startReadingHint() 
 {
-	
 	var result = getHeadLine();
-
-	if( $(result).text() ) 
+	if( $(result).text()) 
 	{ // if result exists
-
 		//Add a div to display a msg over the headline element, telling the subject to start
 		$("body").append("<div id='start_tag' style='position:absolute; top:100px;left:300px' > <font color='red' size='12px' face='serif'> <i> Please start from the headline </i></font> </div>");
 		var destination = $(result).offset();
 		//alert("destination: " + destination.top + "," + destination.left);
 		$('#start_tag').css({top: destination.top, left: destination.left});
-		
-		
-
-		
-		
 		var pObj = getParagraphs(result);
-		var html =$(pObj.paras[0]).html();
-		var firstWord = getFirstWordFromHTML(html);
-		alert("firstWord = " + firstWord);
-		var tmpSpanId = 'tmpSpanStartReadingHint';
-		html = html.replace(firstWord, "<span id='" + tmpSpanId + "'>" + firstWord +  "</span>" );
-		
-		$(pObj.paras[0]).html(html)
-
-		
-		var firstSpan = document.getElementById(tmpSpanId);
-
-		alert(firstSpan);
-
-		var rect = firstSpan.getBoundingClientRect();
-		
-		//var firstParaPos = $('#' + tmpSpanId).offset ();
-
-		alert("firstParaPos Y = " + rect.top);
-
-		//alert(html);
-
-		$(pObj.paras[0]).html(html);
-
-
-		//alert("outside:" + $(pObj.paras[0]).html())
-		//var firstP = pObj.paras[0];
-
-		//$(pObj.paras[0]).css({outline : "thick solid #0000FF"});
-		var pos = $(pObj.paras[0]).position();
-		
-		 
-
-
-		
-		//alert("firstP.left = " + pos.left);
-
-		//alert("firstP.top = " + pos.top)
-
-		//alert(firstP.top);
-		//Roll the window to the paragraph place
-
-		//$(result).css({outline : "thick solid #0000FF"});
-
-		console.log("pos.top = " + pos.top);
-		console.log('before scroll');
-		window.scrollTo(500,pos.top);
-		console.log('after scroll');
+		var yOffset = getParaPosition(pObj.paras[0]);
+		window.scrollTo(0,yOffset);
 	}
 }
-
-
-
