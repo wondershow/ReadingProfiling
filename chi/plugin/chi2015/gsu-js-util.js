@@ -189,3 +189,42 @@ function getParagraphs(titleEl) {
 	});
 	return res;
 }
+
+/**
+	To get leftmost X of current window(NOT screen!).
+	since if you have a scroll bar, window might have offset 
+	from the documents(0,0) position
+**/
+function getWindowX() {
+	var doc = document.documentElement, body = document.body;
+	var left = (doc && doc.scrollLeft || body && body.scrollLeft || 0);
+	var top = (doc && doc.scrollTop  || body && body.scrollTop  || 0);
+	return left;
+}
+
+/**
+	To get leftmost Y of current window(NOT screen!).
+	since if you have a scroll bar, window might have offset 
+	from the documents(0,0) position
+**/
+function getWindowY() {
+	var doc = document.documentElement, body = document.body;
+	var left = (doc && doc.scrollLeft || body && body.scrollLeft || 0);
+	var top = (doc && doc.scrollTop  || body && body.scrollTop  || 0);
+	return top;
+}
+
+/**
+	To get the current range of window(NOT screen!).
+	Since the document width and height might exceed the 
+	screen limit.
+**/
+function getWindowRange() {
+	res = new Object();
+	res['xFrom'] = getWindowX();
+	res['xTo'] = getWindowX() + $(window).width();
+	res['yFrom'] = getWindowY();
+	res['yTo'] = getWindowY() + $(window).height();
+	return res; 
+}
+

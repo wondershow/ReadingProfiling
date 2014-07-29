@@ -72,7 +72,14 @@ function getAndDisplayXandY(e){
             });*/
             $('html').click(function(event){
                 console.log("mouse click X:"+event.pageX+" Y:"+event.pageY + "clientY : " + event.clientY);
+
+
+				var range =	getWindowRange();
+				console.log("screenX From =" + range['xFrom'] + ", screenX To =" + range['xTo']);
+				console.log("screenY From =" + range['yFrom'] + ", screenY To =" + range['yTo']);
+				//console.log("top:" +top);
             });
+
             $('html').keyup(function(event){
                 console.log("keyboard event: key pressed "+event.keyCode);
             });
