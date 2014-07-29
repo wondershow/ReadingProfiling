@@ -1,4 +1,4 @@
-alert('load content.js')
+
 
 var selElem = null; // store the currently selected element
 var origBorder = ""; 
@@ -6,6 +6,15 @@ var origBorder = "";
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
 		case "colors-div":
+			startReadingHint();
+
+			alert("Hello");
+			var body = document.querySelectorAll("body");
+ 			if(body.length === 0) {
+ 				alert("There are no any divs in the page.");
+ 			} else {
+ 				body[0].addEventListener("click",getAndDisplayXandY, false);
+ 			}
 			/*
 			var divs = document.querySelectorAll("div");
 			if(divs.length === 0) {
@@ -27,46 +36,42 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	This function get and display coordinate of a mouse click event.
 ***/
 function getAndDisplayXandY(e){
+
  var evt = e ? e:window.event;
  var clickX=0, clickY=0;
 
  if ((evt.clientX || evt.clientY) &&
      document.body &&
      document.body.scrollLeft!=null) {
-	clickX = evt.clientX + document.body.scrollLeft;
+	 clickX = evt.clientX + document.body.scrollLeft;
 	 clickY = evt.clientY + document.body.scrollTop;
  }
  if ((evt.clientX || evt.clientY) &&
      document.compatMode=='CSS1Compat' && 
      document.documentElement && 
      document.documentElement.scrollLeft!=null) {
-	clickX = evt.clientX + document.documentElement.scrollLeft;
-	clickY = evt.clientY + document.documentElement.scrollTop;
+	 clickX = evt.clientX + document.documentElement.scrollLeft;
+	 clickY = evt.clientY + document.documentElement.scrollTop;
  }
  if (evt.pageX || evt.pageY) {
-	clickX = evt.pageX;
-	clickY = evt.pageY;
+	 clickX = evt.pageX;
+	 clickY = evt.pageY;
  }
 
- alert (evt.type.toUpperCase() + ' mouse event3333:'
-		+'\n pageX = ' + clickX
-		+'\n pageY = ' + clickY 
-		+'\n clientX = ' + evt.clientX
-		+'\n clientY = '  + evt.clientY 
-		+'\n screenX = ' + evt.screenX 
-		+'\n screenY = ' + evt.screenY)
 
- alert("here you are");
+
+
  var element = document.elementFromPoint(evt.clientX, evt.clientY);
- alert(element.type);
+
 
 
   $(document).ready(function(){
-            $('html').mousemove(function(event){
+			
+            /*$('html').mousemove(function(event){
                 console.log("mouse move X:"+event.pageX+" Y:"+event.pageY);
-            });
+            });*/
             $('html').click(function(event){
-                console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
+                console.log("mouse click X:"+event.pageX+" Y:"+event.pageY + "clientY : " + event.clientY);
             });
             $('html').keyup(function(event){
                 console.log("keyboard event: key pressed "+event.keyCode);
@@ -277,53 +282,9 @@ $("body").click(function(event){
 
 //console.log($('body').text())
 
-/**
-The following code demos how to get a headline of a news webpage 
-**/
-alert("The following code demos how to get a headline of a news webpage and show a dialog box on the tittle");
-
-startReadingHint();
 
 
-/***
-	This function get the headline of a webpage.
-*/
-function getHeadLine() 
-{
-	var text = '';
-	var max_font_size = 0;
-	var result = null;
 
-	$("h1, h2, h3, h4, h5, h6").filter(
-									function()
-									{
-										if(($(this).text().length>5)&&($(this).text().length<100))
-										{
-											//alert($(this).text());
-											return true;
-										}
-
-									}
-		).each( 
-			function()
-			{
-				//alert($(this).css('font-size')+", text = " + $(this).text());
-
-				//alert("$(this).text() = " + $(this).text() + ", font-size="+$(this).css('font-size'));
-				//alert("max_font_size = " + max_font_size);
-				var font_size = $(this).css('font-size').replace('px', '');
-				//alert("font_size = '" + font_size + "'");
-				if( $.isNumeric(font_size) &&   parseInt(font_size) > parseInt(max_font_size)  ) 
-				{
-					//alert( (font_size > max_font_size) + ",font_size = " + font_size + ", max_font_size = " + max_font_size );
-					//alert("font_size1111 = '" + font_size + "'");
-					result = $(this);
-					max_font_size = font_size
-				}
-			}
-	);
-	return result;
-}
 
 
 
@@ -338,149 +299,63 @@ function startReadingHint()
 		//Add a div to display a msg over the headline element, telling the subject to start
 		$("body").append("<div id='start_tag' style='position:absolute; top:100px;left:300px' > <font color='red' size='12px' face='serif'> <i> Please start from the headline </i></font> </div>");
 		var destination = $(result).offset();
-		alert("destination: " + destination.top + "," + destination.left);
+		//alert("destination: " + destination.top + "," + destination.left);
 		$('#start_tag').css({top: destination.top, left: destination.left});
 		
-		//Roll the window to the paragraph place
-		$(result).css({outline : "thick solid #0000FF"});
-		scrollTo(0,destination.top);
+		
 
-		var stop = false;
-		alert("TagName:" + $(result).prop("tagName"));
+		
 		
 		var pObj = getParagraphs(result);
+		var html =$(pObj.paras[0]).html();
+		var firstWord = getFirstWordFromHTML(html);
+		alert("firstWord = " + firstWord);
+		var tmpSpanId = 'tmpSpanStartReadingHint';
+		html = html.replace(firstWord, "<span id='" + tmpSpanId + "'>" + firstWord +  "</span>" );
+		
+		$(pObj.paras[0]).html(html)
 
+		
+		var firstSpan = document.getElementById(tmpSpanId);
+
+		alert(firstSpan);
+
+		var rect = firstSpan.getBoundingClientRect();
+		
+		//var firstParaPos = $('#' + tmpSpanId).offset ();
+
+		alert("firstParaPos Y = " + rect.top);
+
+		//alert(html);
+
+		$(pObj.paras[0]).html(html);
+
+
+		//alert("outside:" + $(pObj.paras[0]).html())
+		//var firstP = pObj.paras[0];
+
+		//$(pObj.paras[0]).css({outline : "thick solid #0000FF"});
+		var pos = $(pObj.paras[0]).position();
+		
+		 
 
 
 		
-		//alert("Length = " + $(result).find( "p" ).length);
-		while($(result).find( "p" ).length == 0) {
-			result = $(result).parent();
-		}
-		
+		//alert("firstP.left = " + pos.left);
+
+		//alert("firstP.top = " + pos.top)
+
+		//alert(firstP.top);
+		//Roll the window to the paragraph place
+
 		//$(result).css({outline : "thick solid #0000FF"});
-		//alert("class" + $(result).attr("class"))
-		
-		
 
-		$(result).find( "p" ).each( function(){
-			//alert( $(this).css('font-family') + "," + $(this).css('font-size') + "," + $(this).html());
-		});
-		//alert('please start from the headline');
+		console.log("pos.top = " + pos.top);
+		console.log('before scroll');
+		window.scrollTo(500,pos.top);
+		console.log('after scroll');
 	}
 }
-
-//defines a paragrahs object
-function paragrahsObj() {
-	this.paras = new Object();
-	this.paraCssClass = '';
-}
-
-/**
-	Given a html element(<h>), get all its paragraphs(belong to that title)
-**/
-function getParagraphs(titleEl) {
-
-	var stop = false;
-	var ele = titleEl;
-
-	//We suppose that the paragraph and title are under same ancestor
-	//So we search upwards until find first ancestor that has an <p> 
-	//tag as its offspring
-	while($(ele).find( "p" ).length == 0) {
-		ele = $(ele).parent();
-	}
-	
-	var pArr = $.makeArray( $(ele).find( "p" ) );
-
-
-	var fontStyle = getMainFontClass(pArr);
-	alert();
-	var fontStlArr = fontStyle.split(',');
-	var fontStr = fontStlArr[0];
-	var fontSizeStr = fontStlArr[1];
-
-	var res = new paragrahsObj();
-	
-
-	
-	//var hash = res.;
-	
-	var count = 1;
-	$(ele).find( "p" ).each( function(){
-		if($(this).css('font-family') === fontStr && ($(this).css('font-size')).indexOf(fontSizeStr) >= 0) {
-			//alert( $(this).css('font-family') + "," + $(this).css('font-size') + "," + $(this).html());
-			$(this).html(  count + ":" + $(this).html());
-			count = count + 1;
-		}
-	});
-}
-
-
-
-/**
-Given an array of paragraph HTML elements(<p>),
-do a poll for the css font styles(font and fontsize), 
-return the most popular font style.
-*/
-function getMainFontClass(paraArr) {
-    var	hash = new Object();
-
-	for(i=0;i<paraArr.length;i++) {
-		var pBody = paraArr[i];
-		var key = getFontStyle(pBody) + "," + getFontSize(pBody);
-		
-		//update poll
-		if(!(key in hash))
-			hash[key] = 1;
-		else
-			hash[key] = hash[key] + 1;
-	}
-	
-	var highFreq = 0;
-	var res = '';
-	for(key in hash) {
-		if (hash.hasOwnProperty(key) && hash[key]> highFreq) {
-			highFreq = hash[key];
-			res = key;
-		}
-	}
-	return res;
-}
-
-
-
-/**
-	Given a HTML element, return its 
-	font
-**/
-function getFontStyle(el) {
-	return $(el).css('font-family');
-}
-
-
-/**
-	Given a HTML element, return its
-	font size, here we 
-	return a numeric value
-*/
-function getFontSize(el) {
-	var sizeText = $(el).css('font-size');
-	return sizeText.replace(/[a-zA-Z]/g,'').replace(/\s/g,'');
-}
-
-/**
-	This function calculates the frequency of a set of strings.
-	@resArr similar as a dic, "string" => frequency
-	@string the string to be counted
-**/
-function getHitRate (resArr, string) {
-	if(!(string in resArr))
-		resArr[string] = 1;
-	else
-		resArr[string] = resArr[string] + 1;
-}
-
 
 
 

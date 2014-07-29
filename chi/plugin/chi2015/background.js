@@ -13,6 +13,7 @@ chrome.omnibox.onInputEntered.addListener(function(text) {
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.type) {
         case "color-divs":
+			alert('start');
             colorDivs();
         break;
     }
@@ -40,4 +41,4 @@ var colorDivs = function() {
 	});
 }
 
-alert("background script loaded");
+//alert("background script loaded");

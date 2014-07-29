@@ -28,7 +28,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["jquery-2.1.1.js","jquery-ui.js","content.js","jquery-ui-content.hack.js"],
+      "js": ["jquery-2.1.1.js","jquery-ui.js","content.js","gsu-js-util.js"],
       "css": [ "jquery-ui.css" ]
     }
   ],
