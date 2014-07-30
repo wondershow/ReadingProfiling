@@ -228,3 +228,18 @@ function getWindowRange() {
 	return res; 
 }
 
+/**
+	To make an HTML blurred in 
+	its text.
+**/
+function blurElement(ele) {
+	$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
+}
+
+/**
+	To remove the blur effect of an element.
+**/
+function unBlurElement(ele) {
+	$(ele).css('color', 'auto').css('text-shadow', 'auto');
+}
+

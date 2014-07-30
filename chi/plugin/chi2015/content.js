@@ -7,14 +7,11 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
 		case "colors-div":
 			startReadingHint();
+			//captureAndDislayUserData();
 
-			alert("Hello");
-			var body = document.querySelectorAll("body");
- 			if(body.length === 0) {
- 				alert("There are no any divs in the page.");
- 			} else {
- 				body[0].addEventListener("click",getAndDisplayXandY, false);
- 			}
+
+			
+			
 			/*
 			var divs = document.querySelectorAll("div");
 			if(divs.length === 0) {
@@ -29,6 +26,19 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 		break;
 	}
 });
+
+
+
+
+function captureAndDislayUserData() {
+	var body = document.querySelectorAll("body");
+	if(body.length === 0) {
+		alert("There are no any divs in the page.");
+	} else {
+		body[0].addEventListener("click",getAndDisplayXandY, false);
+	}
+}
+
 
 
 
@@ -319,6 +329,8 @@ function startReadingHint()
 		$('#start_tag').css({top: destination.top, left: destination.left});
 		var pObj = getParagraphs(result);
 		var yOffset = getParaPosition(pObj.paras[0]);
+
+		//scrollTo the 1st paragraph.
 		window.scrollTo(0,yOffset);
 	}
 }
