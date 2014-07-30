@@ -145,7 +145,7 @@ function getMainFontClass(paraArr) {
  */
 function paragrahsObj() {
 	this.paras = new Object();
-	this.paraCssClass = '';
+	this.length = 0;
 }
 
 
@@ -187,6 +187,9 @@ function getParagraphs(titleEl) {
 			//return true;
 		}
 	});
+
+	res.length = count;
+
 	return res;
 }
 
@@ -234,12 +237,33 @@ function getWindowRange() {
 **/
 function blurElement(ele) {
 	$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
+	var eleId = 'blrEle' + Math.floor(Math.random()*100000);
+	$(ele).attr('id',eleId);
+	$(ele).click(function(event){
+		unBlurElement(eleId);
+	});
 }
+
+
 
 /**
 	To remove the blur effect of an element.
 **/
-function unBlurElement(ele) {
-	$(ele).css('color', 'auto').css('text-shadow', 'auto');
+function unBlurElement(id) {
+	//alert("id = " + id);
+	//var ele = document.getElementById(id);
+	//var ele = $('#'+id);
+	//alert($('#'+id).length);
+	//var ele = $('#'+id);
+	//alert("is ele null " + ele);
+	$('#'+id).css('color', 'auto').css('text-shadow', 'auto');
+	$('#'+id).click(function(event){});
 }
 
+/**
+	
+**/
+function generateRandomId() {
+
+
+}

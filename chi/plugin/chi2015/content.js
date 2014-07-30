@@ -311,7 +311,7 @@ function getParaPosition(para) {
 	alert("firstWord = " + firstWord);
 	var tmpSpanId = 'tmpSpanStartReadingHint';
 	html = html.replace(firstWord, "<span id='" + tmpSpanId + "'>" + firstWord +  "</span>" );
-	$(para).html(html)
+	$(para).html(html);
 	var firstSpan = document.getElementById(tmpSpanId);
 	var offset = $(firstSpan).offset();
 	return offset.top;
@@ -329,7 +329,20 @@ function startReadingHint()
 		$('#start_tag').css({top: destination.top, left: destination.left});
 		var pObj = getParagraphs(result);
 		var yOffset = getParaPosition(pObj.paras[0]);
+		
+		alert('pObj.paras.length = ' + pObj.length);
+		for(var i=0;i<pObj.length;i++) {
+			$(pObj.paras[i]).lettering('words');
+		}
+		
+		
+		for(var i=0;i<pObj.length;i++) {
+			
+			var spanArray = $(pObj.paras[i]).children('span')
+			blurElement(spanArray[0]);
 
+			//alert($(spanArray[0]).html());
+		}
 		//scrollTo the 1st paragraph.
 		window.scrollTo(0,yOffset);
 	}
