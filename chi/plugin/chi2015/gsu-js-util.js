@@ -238,14 +238,13 @@ function getWindowRange() {
 function blurElement(ele) {
 	$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
 
-	/*
+	
 	var eleId = 'blrEle' + Math.floor(Math.random()*100000);
 	$(ele).attr('id',eleId);
 	$(ele).click(function(event){
 		//alert(eleId);
-
 		unBlurElement(eleId);
-	});*/
+	});
 }
 
 
@@ -253,13 +252,13 @@ function blurElement(ele) {
 /**
 	To remove the blur effect of an element.
 **/
-function unBlurElement(ele) {
+function unBlurElement(id) {
 	//alert("id = " + id);
-	//var ele = document.getElementById(id);
+	var ele = document.getElementById(id);
 	//var ele = $('#'+id);
 	//alert($('#'+id).length);
 	//var ele = $('#'+id);
 	//alert("is ele null " + ele);
 	$(ele).css('color', '').css('text-shadow', '');
-	//$('#'+id).click(function(event){});
+	$(ele).click(function(event){});
 }
