@@ -340,7 +340,7 @@ function startReadingHint()
 			
 			var spanArray = $(pObj.paras[i]).children('span')
 			blurElement(spanArray[0]);
-			unBlurElement(spanArray[0]);
+			//unBlurElement(spanArray[0]);
 			//alert($(spanArray[0]).html());
 		}
 		//scrollTo the 1st paragraph.

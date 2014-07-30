@@ -260,6 +260,6 @@ function unBlurElement(ele) {
 	//alert($('#'+id).length);
 	//var ele = $('#'+id);
 	//alert("is ele null " + ele);
-	$(ele).css('color', 'auto').css('text-shadow', 'auto');
+	$(ele).css('color', '').css('text-shadow', '');
 	//$('#'+id).click(function(event){});
 }
