@@ -73,9 +73,11 @@ Date.prototype.yyyymmdd = function() {
 function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 	var timestamp = new Date().getTime();
 	var date = new Date(timestamp);
+	//console.log("timestamp = " + timestamp + ", ");
 	var dateString = date.getFullYear() + '/' + (date.getMonth()+1) + '/' +  date.getDate()  + ' '
 					  + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-	var new_obj = {'Timestamp':timestamp,'dateString':dateString,'Type':type, 'ClientX':clientX, 
+    //console.log("timestamp = " + timestamp + ", dateString = " + dateString);
+	var new_obj = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
 				   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
 
 	totalDataLength++;
@@ -147,7 +149,7 @@ function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 ***/
 function getAndDisplayXandY(e){
 	//console.log("mouse click X:" + event.pageX + " Y:"+ event.pageY + "clientY : " + event.clientY );
-	createXYJSONData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+	createXYJSONData('click',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 /*
  var evt = e ? e:window.event;
  var clickX=0, clickY=0;
