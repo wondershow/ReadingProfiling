@@ -1,17 +1,33 @@
-
-
 var selElem = null; // store the currently selected element
-var origBorder = ""; 
+var origBorder = "";
+
+var MAX_SENDOBJ_LENGTH = 200;
+var OBJ_ARR_LENGTH = 5;
+var jsonSendObjArr = {};
+jsonSendObjArr.objList = [];
+jsonSendObjArr.objArrLen = OBJ_ARR_LENGTH;
+jsonSendObjArr.curItem = 0;     //The obj index that is holding client side data
+jsonSendObjArr.lastSendItm = 0; //The obj index that is sent by ajax
+for(var i=0; i<OBJ_ARR_LENGTH; i++) {
+	jsonSendObjArr.objList[i] = {};
+	jsonSendObjArr.objList[i].dataList=[];
+}
+
+var totalDataLength = 0;
+
+
 
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
 		case "colors-div":
-			startReadingHint();
-			//captureAndDislayUserData();
+			//startReadingHint();
+			//captureAndDislayUserData();			
+			//sendDataByGet();
+			//sendJSONData();
+			captureAndDislayUserData();
 
 
-			
-			
+			//getMouseTrajectory();
 			/*
 			var divs = document.querySelectorAll("div");
 			if(divs.length === 0) {
@@ -28,17 +44,101 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 });
 
 
-
-
 function captureAndDislayUserData() {
 	var body = document.querySelectorAll("body");
+
 	if(body.length === 0) {
 		alert("There are no any divs in the page.");
 	} else {
 		body[0].addEventListener("click",getAndDisplayXandY, false);
+		body[0].addEventListener("mousemove",showMouseMove,false);
 	}
 }
 
+
+function showMouseMove(event) {
+	//console.log("mouse move X:" + event.pageX + " Y:"+event.pageY + "clientY : " + event.clientY );
+	createXYJSONData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+	return false;
+}
+
+Date.prototype.yyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
+};
+
+
+function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
+	var timestamp = new Date().getTime();
+	var date = new Date(timestamp);
+	var dateString = date.getFullYear() + '/' + (date.getMonth()+1) + '/' +  date.getDate()  + ' '
+					  + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+	var new_obj = {'Timestamp':timestamp,'dateString':dateString,'Type':type, 'ClientX':clientX, 
+				   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
+
+	totalDataLength++;
+	/*
+	var jsonSendObjArr = {};
+	jsonSendObjArr.objList = [];
+	jsonSendObjArr.objArrLen = OBJ_ARR_LENGTH;
+	jsonSendObjArr.curItem = 0;     //The obj index that is holding client side data
+	jsonSendObjArr.lastSendItm = 0;
+	*/
+
+	var curItemIndex = jsonSendObjArr.curItem;
+	jsonSendObjArr.objList[curItemIndex].dataList.push(new_obj);      //jsonSendObj.itemList.push( new_obj );
+
+	if(jsonSendObjArr.objList[curItemIndex].dataList.length >= MAX_SENDOBJ_LENGTH) {
+		console.log("send json data, totalDataLength = " + totalDataLength + ", curItemIndex = " 
+					+ curItemIndex + ", len = " + jsonSendObjArr.objList[curItemIndex].dataList.length);
+		jsonSendObjArr.curItem = (jsonSendObjArr.curItem + 1) % OBJ_ARR_LENGTH;
+		sendJSONData();
+	}
+
+	
+}
+
+/**The following code illustrates how to submit json arrays to a google spread sheet 
+	web apps, on the google side, the code can decode the json array**/
+
+	/**
+		Send JSON data to a remove server.(google web app)
+	**/
+	
+	function sendJSONData() {
+		//jsonSendObjArr.lastSendItm = jsonSendObjArr.curItem;
+		var curObjIndex = jsonSendObjArr.lastSendItm;
+		jsonSendObjArr.lastSendItm = (jsonSendObjArr.lastSendItm + 1) % OBJ_ARR_LENGTH;
+
+		$.ajax({
+			   type: "POST",
+			   url: "https://script.google.com/macros/s/AKfycbyNQLA7ZiDQMnMorpW6kyqIcmA5CdDe4Ho_39rz4Whj1nB_hTQ/exec",
+			   dataType: "json",
+			   success: function (msg) {
+				   //console.log(arguments);
+				   //alert('success')
+				   cleanSendObjArray(curObjIndex);
+			   },
+			   error: function(XMLHttpRequest, textStatus, errorThrown) {
+			   
+					//console.log(arguments);
+					//alert("Status: " + textStatus);
+					//alert("Error: " + errorThrown);
+					cleanSendObjArray(curObjIndex);
+			   },
+			   data: JSON.stringify(jsonSendObjArr.objList[curObjIndex])
+		});
+	}
+	
+	/***
+		To clean the send obj array.
+	**/
+	function cleanSendObjArray(index) {
+		jsonSendObjArr.objList[index] = {};
+		jsonSendObjArr.objList[index].dataList=[];
+	}
 
 
 
@@ -46,7 +146,9 @@ function captureAndDislayUserData() {
 	This function get and display coordinate of a mouse click event.
 ***/
 function getAndDisplayXandY(e){
-
+	//console.log("mouse click X:" + event.pageX + " Y:"+ event.pageY + "clientY : " + event.clientY );
+	createXYJSONData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+/*
  var evt = e ? e:window.event;
  var clickX=0, clickY=0;
 
@@ -68,35 +170,33 @@ function getAndDisplayXandY(e){
 	 clickY = evt.pageY;
  }
 
-
-
-
  var element = document.elementFromPoint(evt.clientX, evt.clientY);
 
-
-
-  $(document).ready(function(){
+ $(document).ready(function(){
 			
-            /*$('html').mousemove(function(event){
+            $('html').mousemove(function(event){
                 console.log("mouse move X:"+event.pageX+" Y:"+event.pageY);
-            });*/
+            });
             $('html').click(function(event){
-                console.log("mouse click X:"+event.pageX+" Y:"+event.pageY + "clientY : " + event.clientY);
-
-
-				var range =	getWindowRange();
-				console.log("screenX From =" + range['xFrom'] + ", screenX To =" + range['xTo']);
-				console.log("screenY From =" + range['yFrom'] + ", screenY To =" + range['yTo']);
+                console.log("mouse click X:" + event.pageX + " Y:"+event.pageY + "clientY : " + event.clientY);
+				//var range =	getWindowRange();
+				//console.log("screenX From =" + range['xFrom'] + ", screenX To =" + range['xTo']);
+				//console.log("screenY From =" + range['yFrom'] + ", screenY To =" + range['yTo']);
 				//console.log("top:" +top);
             });
 
             $('html').keyup(function(event){
                 console.log("keyboard event: key pressed "+event.keyCode);
             });
-  });
+  }); */
 
  return false;
 }
+
+
+
+
+
 
 
 function getAndDisplayElementName(e) {
@@ -163,17 +263,17 @@ $.ajax({
 
  
 /*The following code send data to a google docs sheet */
-/*var xhr = new XMLHttpRequest(); 
-xhr.open("GET", "https://script.google.com/macros/s/AKfycbyFQXA49rONAqprRWfb6Ro5xTKW8ECFXp448FmhSbCul_QG88lb/exec?F1=whc3333&F2=zcd4444", true);
-xhr.onreadystatechange = function() {
-	 if (xhr.readyState == 4) {
-		alert("Okay");
-		// paste your code here 
-     }
+function sendDataByGet() {
+	var xhr = new XMLHttpRequest(); 
+	xhr.open("GET", "https://script.google.com/macros/s/AKfycbyNQLA7ZiDQMnMorpW6kyqIcmA5CdDe4Ho_39rz4Whj1nB_hTQ/exec?F1=111&F2=222&F3=333", true);
+	xhr.onreadystatechange = function() {
+		 if (xhr.readyState == 4) {
+			alert("Okay");
+			// paste your code here 
+		 }
+	}
+	xhr.send();
 }
-xhr.send();
-*/
-
 
 
 /**
@@ -181,29 +281,26 @@ xhr.send();
 	into a json array. 
 **/
 
-/*
-alert('lcy111')
+function getMouseTrajectory() {
+	var jsonObj = {};
+	jsonObj.itemlist=[];
 
-var jsonObj = {};
-jsonObj.itemlist=[];
-
-var d = new Date();
-var n = d.getTime();
-
-
-$("body").mousemove(function(event) {
 	var d = new Date();
 	var n = d.getTime();
-	var new_obj = {'x':event.pageX, 'y':event.pageY, 'timestamp': n};
-	jsonObj.itemlist.push( new_obj );
-	var len = jsonObj.itemlist.length;
-	//if(len % 100 == 0)
-	//	alert('len is ' + len);
-	//console.log('x:' + event.pageX + ", y " + event.pageY + ", timestampe" + new_obj['timestamp']);
-	console.log('pageX:=' + event.pageX + ',pageY:=' + event.pageY + ", clientX = " + event.clientX + ", clientY = " + event.clientY + ", screenX = " + event.screenX + ", screenY = " + event.screenY);
-});*/
 
+	$("body").mousemove(function(event) {
+		var d = new Date();
+		var n = d.getTime();
+		var new_obj = {'x':event.pageX, 'y':event.pageY, 'timestamp': n};
+		jsonObj.itemlist.push( new_obj );
+		var len = jsonObj.itemlist.length;
+		//if(len % 100 == 0)
+		//	alert('len is ' + len);
+		//console.log('x:' + event.pageX + ", y " + event.pageY + ", timestampe" + new_obj['timestamp']);
+		console.log('pageX:=' + event.pageX + ',pageY:=' + event.pageY + ", clientX = " + event.clientX + ", clientY = " + event.clientY + ", screenX = " + event.screenX + ", screenY = " + event.screenY);
+	});
 
+}
 
 
 
@@ -228,35 +325,7 @@ $("body").click(function(event){
 
 
 
-
-
-
-
-
-
-
-
-	/**The following code illustrates how to submit json arrays to a google spread sheet web apps, on the google side, the code can decode the json array**/
-    /*alert('This demo illustrates how to submit json arrays to a google spread sheet web apps, on the google side, the code can decode the json array');
-	var jsonObj = {};
-	jsonObj.itemlist=[];
-    var new_obj = {'F1':'ajaxGSU3', 'F2':'ajaxGSU4', 'F3': 'test'};
-    jsonObj.itemlist.push( new_obj );
-	new_obj = {'F1':'ajaxGSU1', 'F2':'ajaxGSU2', 'F3': 'test'};
-	jsonObj.itemlist.push( new_obj );
-
-	$.ajax({
-           type: "POST",
-           url: "https://script.google.com/macros/s/AKfycbyNQLA7ZiDQMnMorpW6kyqIcmA5CdDe4Ho_39rz4Whj1nB_hTQ/exec",
-           dataType: "json",
-           success: function (msg) {
-               alert('success')
-           },
-		   error: function(XMLHttpRequest, textStatus, errorThrown) { 
-			alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-		   },
-           data: JSON.stringify(jsonObj)
-	});*/
+	
 
 
 
@@ -308,7 +377,6 @@ notice that the position is the vertical offset of the document.
 function getParaPosition(para) {
 	var html =$(para).html();
 	var firstWord = getFirstWordFromHTML(html);
-	alert("firstWord = " + firstWord);
 	var tmpSpanId = 'tmpSpanStartReadingHint';
 	html = html.replace(firstWord, "<span id='" + tmpSpanId + "'>" + firstWord +  "</span>" );
 	$(para).html(html);
@@ -330,11 +398,9 @@ function startReadingHint()
 		var pObj = getParagraphs(result);
 		var yOffset = getParaPosition(pObj.paras[0]);
 		
-		alert('pObj.paras.length = ' + pObj.length);
 		for(var i=0;i<pObj.length;i++) {
 			$(pObj.paras[i]).lettering('words');
 		}
-		
 		
 		for(var i=0;i<pObj.length;i++) {
 			

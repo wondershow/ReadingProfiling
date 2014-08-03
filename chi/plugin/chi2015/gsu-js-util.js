@@ -247,8 +247,6 @@ function blurElement(ele) {
 	});
 }
 
-
-
 /**
 	To remove the blur effect of an element.
 **/
@@ -260,5 +258,36 @@ function unBlurElement(id) {
 	//var ele = $('#'+id);
 	//alert("is ele null " + ele);
 	$(ele).css('color', '').css('text-shadow', '');
-	$(ele).click(function(event){});
+	$(ele).click(recordUnBlurEvent(event));
+}
+
+
+/**
+	This function 
+*/
+function detectScroll() {
+
+
+
+}
+
+function recordUnBlurEvent(e) {
+	alert('here I am in the recordUnBlurEvent x = ' + event.clientX + ', y = ' + event.clientY);
+}
+
+
+function cloneEventObj(eventObj, overrideObj){
+
+   if(!overrideObj){ overrideObj = {}; }
+
+   function EventCloneFactory(overProps){
+       for(var x in overProps){
+           this[x] = overProps[x];
+       }
+    }
+
+    EventCloneFactory.prototype = eventObj;
+
+    return new EventCloneFactory(overrideObj);
+
 }
