@@ -271,9 +271,7 @@ function detectScroll() {
 
 }
 
-function recordUnBlurEvent(e) {
-	alert('here I am in the recordUnBlurEvent x = ' + event.clientX + ', y = ' + event.clientY);
-}
+
 
 
 function cloneEventObj(eventObj, overrideObj){

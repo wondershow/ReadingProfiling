@@ -80,7 +80,7 @@ function captureAndDislayUserData() {
 
 function showMouseMove(event) {
 	//console.log("mouse X:" + event.clientX + ",Y:"+event.clientY);
-	createXYJSONData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+	processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 	return false;
 }
 
@@ -91,8 +91,12 @@ Date.prototype.yyyymmdd = function() {
    return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
 };
 
-
-function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
+/**
+	This function handles all the raw data gotten from a user behavior. 
+	It creates an object for each raw data item, put it into a collection(array).
+	Send data to remote server if necessary.
+***/
+function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 	var timestamp = new Date().getTime();
 	var date = new Date(timestamp);
 	//console.log("timestamp = " + timestamp + ", ");
@@ -126,7 +130,7 @@ function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 		console.log("Length of array is " + userDataObjArr.dataList.length);
 		jsonSendObjArr.curItem = (jsonSendObjArr.curItem + 1) % OBJ_ARR_LENGTH;
 		sendJSONData();
-	}	
+	}
 }
 
 	/**The following code illustrates how to submit json arrays to a google spread sheet 
@@ -177,11 +181,14 @@ function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 ***/
 function getClickXY(event){
 	//console.log("mouse X:" + event.clientX + ",Y:"+event.clientY);
-	createXYJSONData('click',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+	processRawData('click',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 	return false;
 }
 
-
+function recordUnBlurEvent(event) {
+	processRawData('unblur',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+	return false;
+}
 
 
 

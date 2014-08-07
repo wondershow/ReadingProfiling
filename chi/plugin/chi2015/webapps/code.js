@@ -87,6 +87,10 @@ function doPost(request) {
 
 **/
 function doPost(e) { // change to doPost(e) if you are recieving POST data
+  //clear the table for storage.
+  //delAllRows();
+  
+  
   var ss = SpreadsheetApp.openById(ScriptProperties.getProperty('active'));
   var sheet = ss.getSheetByName("DATA");
   var maxRow = sheet.getMaxRows();
@@ -141,3 +145,17 @@ function setUp() {
 function testMaxRow() {
  
 }
+
+/**
+This function deletes all rows in a spreadsheet,
+only keep the 1st row(head row).
+*/
+function delAllRows() {
+  var ss = SpreadsheetApp.openById(ScriptProperties.getProperty('active'));
+  var sheet = ss.getSheetByName("DATA");
+  var range = sheet.getDataRange();
+  var lastRow = range.getLastRow()
+  
+  sheet.deleteRows(2, lastRow-1)
+}
+
