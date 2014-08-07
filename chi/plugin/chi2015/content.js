@@ -1,6 +1,10 @@
 var selElem = null; // store the currently selected element
 var origBorder = "";
+var HEADLINE_TOOLIP_ID = 'headline_toolip';
 
+
+
+//jsonSendObjArr is for data exchange use
 var MAX_SENDOBJ_LENGTH = 200;
 var OBJ_ARR_LENGTH = 5;
 var jsonSendObjArr = {};
@@ -13,20 +17,41 @@ for(var i=0; i<OBJ_ARR_LENGTH; i++) {
 	jsonSendObjArr.objList[i].dataList=[];
 }
 
-var totalDataLength = 0;
 
+
+
+
+//userDataObjArr is for front-end behavioral analysis analysis use
+var userDataObjArr = {};
+userDataObjArr.dataList = [];
+
+//How many data items are stored in this array?
+userDataObjArr.dataLength = 0; 
+
+//How many data items have been processed by the front side behavioral analysis algorithm
+userDataObjArr.cursorLength = 0; 
+
+
+
+
+
+
+
+
+
+//For display use
+var totalDataLength = 0;
 
 
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
 		case "colors-div":
-			//startReadingHint();
+			startReadingHint();
 			//captureAndDislayUserData();			
 			//sendDataByGet();
 			//sendJSONData();
-			captureAndDislayUserData();
-
-
+			//captureAndDislayUserData();
+			//showHeadLineToolips();
 			//getMouseTrajectory();
 			/*
 			var divs = document.querySelectorAll("div");
@@ -43,21 +68,18 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	}
 });
 
-
 function captureAndDislayUserData() {
 	var body = document.querySelectorAll("body");
-
 	if(body.length === 0) {
 		alert("There are no any divs in the page.");
 	} else {
-		body[0].addEventListener("click",getAndDisplayXandY, false);
+		body[0].addEventListener("click",getClickXY, false);
 		body[0].addEventListener("mousemove",showMouseMove,false);
 	}
 }
 
-
 function showMouseMove(event) {
-	//console.log("mouse move X:" + event.pageX + " Y:"+event.pageY + "clientY : " + event.clientY );
+	//console.log("mouse X:" + event.clientX + ",Y:"+event.clientY);
 	createXYJSONData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 	return false;
 }
@@ -79,30 +101,35 @@ function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
     //console.log("timestamp = " + timestamp + ", dateString = " + dateString);
 	var new_obj = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
 				   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
+	
+	//we need to create two identical data item, one for send one for front-end analysis
+	var new_obj1 = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
+				   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
+
 
 	totalDataLength++;
-	/*
-	var jsonSendObjArr = {};
-	jsonSendObjArr.objList = [];
-	jsonSendObjArr.objArrLen = OBJ_ARR_LENGTH;
-	jsonSendObjArr.curItem = 0;     //The obj index that is holding client side data
-	jsonSendObjArr.lastSendItm = 0;
-	*/
 
+	
+	//Put data into front-end storage Array
+	userDataObjArr.dataList.push(new_obj1);
+	userDataObjArr.dataLength++;
+
+
+	//put data into cache array for ajax send
 	var curItemIndex = jsonSendObjArr.curItem;
 	jsonSendObjArr.objList[curItemIndex].dataList.push(new_obj);      //jsonSendObj.itemList.push( new_obj );
-
+	
+	//when necessary, send the data.
 	if(jsonSendObjArr.objList[curItemIndex].dataList.length >= MAX_SENDOBJ_LENGTH) {
 		console.log("send json data, totalDataLength = " + totalDataLength + ", curItemIndex = " 
 					+ curItemIndex + ", len = " + jsonSendObjArr.objList[curItemIndex].dataList.length);
+		console.log("Length of array is " + userDataObjArr.dataList.length);
 		jsonSendObjArr.curItem = (jsonSendObjArr.curItem + 1) % OBJ_ARR_LENGTH;
 		sendJSONData();
-	}
-
-	
+	}	
 }
 
-/**The following code illustrates how to submit json arrays to a google spread sheet 
+	/**The following code illustrates how to submit json arrays to a google spread sheet 
 	web apps, on the google side, the code can decode the json array**/
 
 	/**
@@ -128,7 +155,8 @@ function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 					//console.log(arguments);
 					//alert("Status: " + textStatus);
 					//alert("Error: " + errorThrown);
-					cleanSendObjArray(curObjIndex);
+				  cleanSendObjArray(curObjIndex);
+
 			   },
 			   data: JSON.stringify(jsonSendObjArr.objList[curObjIndex])
 		});
@@ -147,52 +175,10 @@ function createXYJSONData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 /***
 	This function get and display coordinate of a mouse click event.
 ***/
-function getAndDisplayXandY(e){
-	//console.log("mouse click X:" + event.pageX + " Y:"+ event.pageY + "clientY : " + event.clientY );
+function getClickXY(event){
+	//console.log("mouse X:" + event.clientX + ",Y:"+event.clientY);
 	createXYJSONData('click',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
-/*
- var evt = e ? e:window.event;
- var clickX=0, clickY=0;
-
- if ((evt.clientX || evt.clientY) &&
-     document.body &&
-     document.body.scrollLeft!=null) {
-	 clickX = evt.clientX + document.body.scrollLeft;
-	 clickY = evt.clientY + document.body.scrollTop;
- }
- if ((evt.clientX || evt.clientY) &&
-     document.compatMode=='CSS1Compat' && 
-     document.documentElement && 
-     document.documentElement.scrollLeft!=null) {
-	 clickX = evt.clientX + document.documentElement.scrollLeft;
-	 clickY = evt.clientY + document.documentElement.scrollTop;
- }
- if (evt.pageX || evt.pageY) {
-	 clickX = evt.pageX;
-	 clickY = evt.pageY;
- }
-
- var element = document.elementFromPoint(evt.clientX, evt.clientY);
-
- $(document).ready(function(){
-			
-            $('html').mousemove(function(event){
-                console.log("mouse move X:"+event.pageX+" Y:"+event.pageY);
-            });
-            $('html').click(function(event){
-                console.log("mouse click X:" + event.pageX + " Y:"+event.pageY + "clientY : " + event.clientY);
-				//var range =	getWindowRange();
-				//console.log("screenX From =" + range['xFrom'] + ", screenX To =" + range['xTo']);
-				//console.log("screenY From =" + range['yFrom'] + ", screenY To =" + range['yTo']);
-				//console.log("top:" +top);
-            });
-
-            $('html').keyup(function(event){
-                console.log("keyboard event: key pressed "+event.keyCode);
-            });
-  }); */
-
- return false;
+	return false;
 }
 
 
@@ -200,13 +186,6 @@ function getAndDisplayXandY(e){
 
 
 
-
-function getAndDisplayElementName(e) {
-	
-
-
-
-}
 
 
 /**
@@ -369,8 +348,6 @@ $("body").click(function(event){
 
 
 //console.log($('body').text())
-
-
 /**
 Given a paragrah html object,
 return the position of its first html word.
@@ -387,10 +364,16 @@ function getParaPosition(para) {
 	return offset.top;
 }
 
-function startReadingHint() 
+function startReadingHint()
 {
+	//Get the headline element
 	var result = getHeadLine();
-	if( $(result).text()) 
+	
+	//the vertical offset of the 1st paragraph
+	var fistParaYOffset = undefined;
+	//$("#vote")
+	
+	if( $(result).text())
 	{ // if result exists
 		//Add a div to display a msg over the headline element, telling the subject to start
 		$("body").append("<div id='start_tag' style='position:absolute; top:100px;left:300px' > <font color='red' size='12px' face='serif'> <i> Please start from the headline </i></font> </div>");
@@ -398,20 +381,30 @@ function startReadingHint()
 		//alert("destination: " + destination.top + "," + destination.left);
 		$('#start_tag').css({top: destination.top, left: destination.left});
 		var pObj = getParagraphs(result);
-		var yOffset = getParaPosition(pObj.paras[0]);
+		fistParaYOffset = getParaPosition(pObj.paras[0]);
 		
 		for(var i=0;i<pObj.length;i++) {
 			$(pObj.paras[i]).lettering('words');
 		}
 		
 		for(var i=0;i<pObj.length;i++) {
-			
 			var spanArray = $(pObj.paras[i]).children('span')
 			blurElement(spanArray[0]);
 			//unBlurElement(spanArray[0]);
 			//alert($(spanArray[0]).html());
 		}
+
 		//scrollTo the 1st paragraph.
-		window.scrollTo(0,yOffset);
+		window.scrollTo(0,fistParaYOffset);
+
+		//Start logging data and send it to background
+		captureAndDislayUserData();
 	}
+}
+
+function showHeadLineToolips(headLine) {
+	var toolipDiv = document.createElement("div");
+	$(toolipDiv).html("Are you reading this article?<BR>Click to continue reading111");
+	$(toolipDiv).addClass("ui-tooltip");
+	$("body").append(toolipDiv);
 }
