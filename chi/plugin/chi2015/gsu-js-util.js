@@ -26,7 +26,7 @@ function getFirstWordFromHTML(html) {
 	basically this function returns the <h> 
 	tag with largest font size
 */
-function getHeadLine() 
+function getHeadLine()
 {
 	var text = '';
 	var max_font_size = 0;

@@ -2,8 +2,6 @@ var selElem = null; // store the currently selected element
 var origBorder = "";
 var HEADLINE_TOOLIP_ID = 'headline_toolip';
 
-
-
 //jsonSendObjArr is for data exchange use
 var MAX_SENDOBJ_LENGTH = 200;
 var OBJ_ARR_LENGTH = 5;
@@ -17,8 +15,16 @@ for(var i=0; i<OBJ_ARR_LENGTH; i++) {
 	jsonSendObjArr.objList[i].dataList=[];
 }
 
+//The vertical offset of the current window and the whole document
+pageHeadObj = {};
+pageHeadObj.pageHeadY = 0;
+pageHeadObj.timeStamp = 0;
 
+var lastScrollTimeStamp = 0;
 
+//we suppose that two intentional scroll action at least 
+//have a time interval of SCROLL_TIMESPAN milliseconds
+var SCROLL_TIMESPAN = 1000;
 
 
 //userDataObjArr is for front-end behavioral analysis analysis use
@@ -46,11 +52,12 @@ var totalDataLength = 0;
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
 		case "colors-div":
-			startReadingHint();
+			//getScreenSize();
+			//startReadingHint();
 			//captureAndDislayUserData();			
 			//sendDataByGet();
 			//sendJSONData();
-			//captureAndDislayUserData();
+			captureAndDislayUserData();
 			//showHeadLineToolips();
 			//getMouseTrajectory();
 			/*
@@ -73,14 +80,70 @@ function captureAndDislayUserData() {
 	if(body.length === 0) {
 		alert("There are no any divs in the page.");
 	} else {
-		body[0].addEventListener("click",getClickXY, false);
-		body[0].addEventListener("mousemove",showMouseMove,false);
+		//body[0].addEventListener("click",getClickXY, false);
+		//body[0].addEventListener("mousemove",showMouseMove,false);
+		window.addEventListener("scroll",showMouseScroll,false);
+
+		pageHeadObj.pageHeadY = $(window).scrollTop();
+		pageHeadObj.timeStamp = new Date().getTime();
+
+		
+		//var win = $(window);
+		//win.addEventListener("scroll",showMouseScroll,false);
 	}
 }
 
+function getScreenSize() {
+	console.log("windows.height:" + $(window).height());   // returns height of browser viewport
+	console.log("windows.width:" + $(window).width());   // returns height of HTML document
+	console.log("document.height:" + $(document).height());   
+	console.log("document.width:" + $(document).width());   
+}
+
+/**
+Test if the code can get HTML content in https
+**/
+function testHTTPS() {
+	//var body = document.querySelectorAll("body");
+	//var result = getHeadLine();
+	//var pObj = getParagraphs(result);
+	//fistParaYOffset = getParaPosition(pObj.paras[0]);
+	alert($("em").html());
+	alert($("h1").html());
+	alert($("h2").html());
+	alert($("h3").html());
+	alert($("h4").html());
+}
+
+
+
+
+/***
+This function detects an intentional scroll
+**/
+function detectUserScroll() {
+	var curTimeStamp = new Date().getTime();
+	if( (curTimeStamp - lastScrollTimeStamp) >  SCROLL_TIMESPAN) {// scroll detected
+		var deltaOffset = $(window).scrollTop() - pageHeadObj.pageHeadY;
+		var deltaTime = curTimeStamp -  pageHeadObj.timeStamp;
+
+		pageHeadObj.pageHeadY = $(window).scrollTop();
+		pageHeadObj.timeStamp = curTimeStamp;
+		console.log("real Scroll detected: y Delta = " + deltaOffset + ", timeDelta = " +deltaTime );
+	}
+
+}
+
+function showMouseScroll(event) {
+	var curTimeStamp = new Date().getTime();
+	lastScrollTimeStamp = curTimeStamp;
+	setTimeout(detectUserScroll,SCROLL_TIMESPAN);
+}
+
 function showMouseMove(event) {
+	console.log("mouse move  X:" + event.clientX + ",Y:"+event.clientY + ",Page X:" + event.pageX + " Y: " + event.pageY);
 	//console.log("mouse X:" + event.clientX + ",Y:"+event.clientY);
-	processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+	//processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 	return false;
 }
 
@@ -110,9 +173,7 @@ function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 	var new_obj1 = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
 				   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
 
-
 	totalDataLength++;
-
 	
 	//Put data into front-end storage Array
 	userDataObjArr.dataList.push(new_obj1);
@@ -132,6 +193,23 @@ function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 		sendJSONData();
 	}
 }
+
+	/**
+		This function takes the mouse x,y and timestamp into consideration to 
+		detect a mouse scroll action
+	***/
+	var lastX;//mouse x before scrolling
+	var lastY;//moust y before scrolling
+	var lastTimeStamp;//the last event
+	function detectScroll(type,timeStamp,clientX,clientY,screenX,screenY,pageX,pageY) {
+		
+	
+	
+	
+	
+	
+	}
+
 
 	/**The following code illustrates how to submit json arrays to a google spread sheet 
 	web apps, on the google side, the code can decode the json array**/
@@ -403,6 +481,10 @@ function startReadingHint()
 
 		//scrollTo the 1st paragraph.
 		window.scrollTo(0,fistParaYOffset);
+
+		//update pageHead object
+		pageHeadObj.pageHeadY = $(window).scrollTop();
+		pageHeadObj.timeStamp = new Date().getTime();
 
 		//Start logging data and send it to background
 		captureAndDislayUserData();
