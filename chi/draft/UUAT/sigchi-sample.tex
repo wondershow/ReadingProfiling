@@ -65,7 +65,7 @@ breaklinks=true,
 % End of preamble. Here it comes the document.
 \begin{document}
 
-\title{SIGCHI Conference Proceedings Format}
+\title{From Up or Down: Locating Habitual Reading Region by UnIntrusive Attention Tracking}
 
 \numberofauthors{3}
 \author{
@@ -82,19 +82,22 @@ breaklinks=true,
 \maketitle
 
 \begin{abstract}
-In this paper we describe the formatting requirements for
-SIGCHI Conference Proceedings, and this sample file
-offers recommendations on writing for the worldwide
-SIGCHI readership. Please review this document even if
-you have submitted to SIGCHI conferences before, some
-format details have changed relative to previous years.
+
+In this paper, we present our research on detecting habitual reading region 
+on the screen when a user is doing his daily online reading. Instead of traditional eye-tracking based solution,
+we developed an unintrusive user attention tracking(UUAT) solution. In UUAT, we developed a ReadingClue 
+technology,  which helps to pinpoint user reading attention when necessary. At the same time, user reading behavioral data(mouse click and mouse scroll) is
+collected in background. With these behavioral data, UUAT calculates a user's preferred reading range. Our experiment
+indicates that the accuracy of UUAT attention tracking is as high as 93.2\%.
+
+
+
+
+
 \end{abstract}
 
 \keywords{
-	Guides; instructions; author's kit; conference publications;
-	keywords should be separated by a semi-colon. \newline
-	\textcolor{red}{Optional section to be included in your final version, 
-  but strongly encouraged.}
+	Attention Tracking; Reading; Mouse movements; Scrolling;
 }
 
 \category{H.5.m.}{Information Interfaces and Presentation (e.g. HCI)}{Miscellaneous}
@@ -108,37 +111,93 @@ letter-number combination will need to be entered.}
 
 \section{Introduction}
 
-This format is to be used for submissions that are
-published in the conference proceedings.  We wish to give
-this volume a consistent, high-quality appearance. We
-therefore ask that authors follow some simple
-guidelines. In essence, you should format your paper
-exactly like this document. The easiest way to do this is
-simply to download a template from the conference web
-site, and replace the content with your own material.
+Personal Data Mining[1](PDM) has been proposed as a complement to commercial/business data mining, which aims to get useful knowledge to improve business opportunity or products popularity. Unlike the concept of commercial data mining, PDM is proposed for a user’s individual good. In PDM, user behavioral data is collected by a neutral utility. The user can choose third-party tools(local) or service(cloud) to analyze his personal data, aiming to improve individual productivity or quality of life.
 
-\section{Page Size and Columns}
+ 
+	As the first step of PDM, Self-Tracking[2] was proposed to log personal data, so that future analysis can be conducted for a user’s good in health. Self-Tracking has been mainly involved in personal physical data, such as, weight, heartbeat, diet and sports. Moreover, the way of logging data has been mainly referred to manual logging, e.g. a user input his weight before going to bed everyday. In this paper, we argue that the reign of personal data is more than physical data and the ways to collect personal data can be extended to an automatic and stealthy way. 
 
-On each page your material (not including the page number) should fit
-within a rectangle of 18 x 23.5 cm (7 x 9.25 in.), centered on a US
-letter page, beginning 1.9 cm (.75 in.) from the top of the page, with
-a .85 cm (.33 in.) space between two 8.4 cm (3.3 in.) columns.  Right
-margins should be justified, not ragged. Beware, especially when using
-this template on a Macintosh, Word can change these dimensions in
-unexpected ways. Please be sure that your PDF is US letter and not
-A4. If your PDF or paper are formatted for A4, the submission will be
-returned to you to fix.
 
-\section{Typeset Text}
+In this research, we consider a user’s daily reading as a source of personal data. An immediate reason is that to understand a user’s daily reading helps to build a user’s personal knowledge demography, let alone “For many self-trackers, the goal is unknown”[3]. We do not consider what a user have read as static data, instead, we consider it as dynamic. For example, if a user spend more unit reading time on  paragraph 1 than average, this might indicate that the user might have pondered on the information in paragraph 1 or have reading struggles on paragraph 1. In either case, it might indicate that the user has encountered new knowledge and he takes time to digest this new information. From this point of view, it might be a mileage for personal knowledge acquisition, e.g., today is the day I first come to know the concept of “shale gas”, although I have read the same phrase years ago. To log this type of personal data, it is unlikely to adopt the same user-aware way, a more intelligent and stealthy method is required to obtain personal reading data. 
 
-Prepare your submissions on a word processor or typesetter.  Please
-note that page layout may change slightly depending upon the printer
-you have specified.  \LaTeX\ sometimes will create overfull lines
-that extend into columns.  To attempt to combat this, the .cls
-file has a command, {\textbackslash}sloppy, that essentially asks
-\LaTeX\ to prefer underfull lines with extra whitespace.  For more
-details on this, and info on how to control it more finely, check out
-{\url{http://www.economics.utoronto.ca/osborne/latex/PMAKEUP.HTM}}.
+In this research, we focus on how to collect objective and detailed reading behavioral data, so that the PDM can be conducted on an accurate and correct basis. To be specific, we focus on a user’s daily online reading activity, our goal is to accurately identify what texts a users read that day and to what extent he spent on specific parts of an article. To realize this goal, we developed a browser-based solution to obtain a user’s preferred reading scope on a screen, by analyzing the user’s mouse/keyboard input, we provide details on user’s dwell time on each information piece(currently our granularity is paragraph-based). By doing this, we enable a more extensive PDM applications which we will discuss in future work of this paper. Our contributions are as follows: 1.We developed an almost UnIntrusive User Attention Tracking utility, which helps to get a user’s preferred reading scope in a stealthy way. 2. We developed  a solution to get a users daily reading data which can be used as input for deep personal data mining. 
+
+
+\section{Related Work}
+
+The idea of quantified self-tracking is well known proposed in [3]. In [3], the author advocates collecting individual quantified data. He presents cases where individual data collection helped to solve person-specific problems. For example, Barbier used her personal data to find a way to cure her insomnia[3],  Seth Roberts, a Caltech professor, analyzed his personal data and find an optimum diet(flaxseed oil) to improve his math performance[3]. In this paper, the author advocates a diversified personal data collection, as long as the data is quantified, albeit you might not know the goal of your data collection immediately. 
+
+
+Since the current personal data mainly includes personal physical data, such as weight, glucose, heartbeat, sports, food/medication consumption. The pervasive methods of personal data collection are mainly by a user himself, such as the methods adopted by PatientsLikeMe[4]. 
+
+
+	Our proposed research is very similar to the work in the field of computer human interaction(HCI). To get a user’s preferred reading scope on a screen, there are mainly two categories of solutions, method of eye-track based and method of user input tracking.  
+Although having the advantages of highly goal-revealing and providing more details, eye-tracking[5] methods are also tagged as intrusive and expensive. It is impractical to popularize an eye-tracking based application to a large scale, in fact, the eye-tracking method are mainly applied in the software usability test. 
+
+
+Compared to eye-tracking method, our proposed research is closer to the method of user input tracking[6,7,8,9,10].  The authors of [6] collected user mouse data, at the same time they collected user’s eye gaze data, they proved that the user mouse data can indicate user behavior, e.g. which part of the screen is more attractive, the user distraction behavior can be detected and the user experience can be predicted by mouse analysis in an accuracy of 80%. The result of this research is highly depend on the eye-gaze data and we argue that the user behavior might be changed once a subject is put into a headset device and knowing he might be taped in a video. The research of [9] are conducted in a goal of software usability test. They collect user data in an implicit(stealthy) way, which is more objective. The collected data is very detail focused, which might be used to construct a “playback” for a tester’s tryout. The downside of this research is that it needs to log every interaction between a user and a web component(not a web page, but each HTML components in that webpage),  e.g. how long does it take the tester to first click on a specific radio button on a page. This makes it a difficult knowledge in the context of web2.0. So a further research[10] is conducted on how to log user interaction with Ajax-based web components. Since the research goal is to evaluate a software usability, the work in [9,10] collects data in a raw and  particular way. Furthermore, extra server-side support is needed to conduct the data collection, making it less scalable. The research of [7,8] are conducted for evaluation of search engine result pages. Both of them collect data for the goal to discover which search engine result item is more attractive to a user. In [7], the author proposed a “viewport” technology, which blurs all the other result items except one item, so that the user can put his attention on result item. In this way, the user is forced to locate his reading range to where the unblurred item is.  In [8], the author also tries to make use of mouse data, but they are more interested in the mouse trajectory instead of the mouse click, since the mouse is more often to move in the screen than a mouse is clicked, but the mouse move does not always trigger an event that can be logged. With the comparison of eye-gaze data, they disclose that the mouse trajectory can be used to infer a user’s interest on the search engine result items. 
+By literature review we distinguish our research from existing works as follows: the data collection in our research is designed to be more scalable, so our data collection method can be tagged as "unintrusive", unlike the eye-gaze technology adopted in [6,8]. Meanwhile our goal is personal data collection instead of usability test, we proposed a new CHI technology to accurately infer user’s preferred reading range on the screen, so that we can collect high quality data that can describe a user’s daily reading behavior objectively. 
+
+
+\section{Assumptions and Models}
+The previous research on user attention tracking \cite{buscher2010eye} have disclosed some facts when a user is doing daily reading on 
+ articles or document papers. Vertically, in most of the time, the reading progresses towards the end of the screen  in a line-by-line manner. 
+However, the reading does not start from the first line on the screen until the last line of the screen. Generally, a user has a preferred reading region on screen,
+as indicated in figure \ref{fig:read_region}. A preferred reading region can be identified by two parameters $\Delta$ and $w$. $\Delta$  indicates the 
+offset from the head of the screen and $w$ indicates the vertical width of the whole region. If a user wants to read the contents outside the region,
+a scroll action is expected. In this research, we take aforementioned assumption and model the user attention range as displayed in figure \ref{fig:read_region}. 
+
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.9\columnwidth]{preferred_reigon}
+\caption{The preferred reading region on the screen}
+\label{fig:read_region}
+\end{figure}
+
+
+
+Taking this model into consideration, our next  research question is: 
+What behavioral data should be collected and analyzed?
+
+
+Eye tracking data can be easily mentioned to answer the question, especially when a "visual" reading range is 
+the goal. However, we argue that the eye tracking data has twofold major drawbacks: 1. The eye tracking collection 
+requires extra hardware, which means the eye tracking  based solution  is not scalable and very costly. 2. What is even worse, 
+eye tracking is "intrusive". A subject person is aware that he is wearing a headset device and he is under a camera coverage, 
+his behavior is very likely to be different from how he behaves when he is doing reading alone. For these two reasons, we 
+can not use eye tracking data. To meet the requirement of unintrusive but objective, the only option left is the user interaction data 
+collected when the reading is ongoing. To be specific, a mouse click indicates user's reading attention at that time instant, a page scroll indicates
+how much contents has been moved out of reading region. In the next section we will discuss how to 
+collect and analyze user interaction data. 
+
+
+
+
+\section {UUAT: Unintrusive User Attention Tracking System}
+
+\subsection{System }
+
+\subsection{Case Study: A User Reading Event}
+In this subsection, we discuss a typical online reading event, during which a user finishes reading of a whole article. Here we suppose 
+that the article is relatively lone, which requires many scroll action. The Whole reading process can be illustrated by figure 
+
+
+%\begin{figure}[!h]
+%\centering
+%\includegraphics[width=0.9\columnwidth]{pictures/scroll}
+%\caption{Reading of a long article in a browser}
+%\label{fig:scroll}
+%\end{figure}
+
+
+
+
+
+
+
+
+
 
 \subsection{Title and Authors}
 

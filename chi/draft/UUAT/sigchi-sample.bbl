@@ -13,6 +13,12 @@ Anderson, R.~E.
 {How to Classify Works Using ACM's Computing Classification System}.
 \newblock \url{http://www.acm.org/class/how_to_use.html}.
 
+\bibitem{buscher2010eye}
+Buscher, G., Biedert, R., Heinesch, D., and Dengel, A.
+\newblock Eye tracking analysis of preferred reading regions on the screen.
+\newblock In {\em CHI'10 Extended Abstracts on Human Factors in Computing
+  Systems}, ACM (2010), 3307--3312.
+
 \bibitem{Klemmer:2002:WSC:503376.503378}
 Klemmer, S.~R., Thomsen, M., Phelps-Goodman, E., Lee, R., and Landay, J.~A.
 \newblock Where do web sites come from?: capturing and interacting with design
