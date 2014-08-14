@@ -58,6 +58,7 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 			//sendDataByGet();
 			//sendJSONData();
 			captureAndDislayUserData();
+			startReadingHint();
 			//showHeadLineToolips();
 			//getMouseTrajectory();
 			/*
@@ -80,14 +81,14 @@ function captureAndDislayUserData() {
 	if(body.length === 0) {
 		alert("There are no any divs in the page.");
 	} else {
-		//body[0].addEventListener("click",getClickXY, false);
-		//body[0].addEventListener("mousemove",showMouseMove,false);
-		window.addEventListener("scroll",showMouseScroll,false);
+		getScreenSize();
+		body[0].addEventListener("click",getClickXY, false);
+		body[0].addEventListener("mousemove",showMouseMove,false);
+		//window.addEventListener("scroll",showMouseScroll,false);
 
 		pageHeadObj.pageHeadY = $(window).scrollTop();
 		pageHeadObj.timeStamp = new Date().getTime();
 
-		
 		//var win = $(window);
 		//win.addEventListener("scroll",showMouseScroll,false);
 	}
@@ -141,9 +142,9 @@ function showMouseScroll(event) {
 }
 
 function showMouseMove(event) {
-	console.log("mouse move  X:" + event.clientX + ",Y:"+event.clientY + ",Page X:" + event.pageX + " Y: " + event.pageY);
+	//console.log("mouse move  X:" + event.clientX + ",Y:"+event.clientY + ",Page X:" + event.pageX + " Y: " + event.pageY);
 	//console.log("mouse X:" + event.clientX + ",Y:"+event.clientY);
-	//processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+	processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 	return false;
 }
 
