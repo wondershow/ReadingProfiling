@@ -1,3 +1,11 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: sigchi-sample.aux
 The style file: acm-sigchi.bst
 Database file #1: sample.bib
+I was expecting a `,' or a `}'---line 46 of file sample.bib
+ : 
+ : @article{jacob2003eye,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "10"
+Warning--to sort, need author or key in plm
+(There was 1 error message)

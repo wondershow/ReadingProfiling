@@ -1,17 +1,15 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
-\bibitem{acrobat}
-{Adobe Acrobat Reader 7}.
-\newblock \url{http://www.adobe.com/products/acrobat/}.
+\bibitem{plm}
+{Patients Like Me}, howpublished = {\url{http://www.patientslikeme.com/}}, note
+  = {Accessed: 2010-09-30}.
 
-\bibitem{ethics}
-Anderson, R.~E.
-\newblock {Social Impacts of Computing: Codes of Professional Ethics}.
-\newblock {\em Social Science Computer Review December 10}, 4 (1992), 453--469.
-
-\bibitem{acm_categories}
-{How to Classify Works Using ACM's Computing Classification System}.
-\newblock \url{http://www.acm.org/class/how_to_use.html}.
+\bibitem{atterer2007tracking}
+Atterer, R., and Schmidt, A.
+\newblock Tracking the interaction of users with ajax applications for
+  usability testing.
+\newblock In {\em Proceedings of the SIGCHI conference on Human factors in
+  computing systems}, ACM (2007), 1347--1350.
 
 \bibitem{buscher2010eye}
 Buscher, G., Biedert, R., Heinesch, D., and Dengel, A.
@@ -19,25 +17,50 @@ Buscher, G., Biedert, R., Heinesch, D., and Dengel, A.
 \newblock In {\em CHI'10 Extended Abstracts on Human Factors in Computing
   Systems}, ACM (2010), 3307--3312.
 
-\bibitem{Klemmer:2002:WSC:503376.503378}
-Klemmer, S.~R., Thomsen, M., Phelps-Goodman, E., Lee, R., and Landay, J.~A.
-\newblock Where do web sites come from?: capturing and interacting with design
-  history.
-\newblock In {\em Proc. CHI 2002}, ACM Press (2002), 1--8.
+\bibitem{huang2011no}
+Huang, J., White, R.~W., and Dumais, S.
+\newblock No clicks, no problem: using cursor movements to understand and
+  improve search.
+\newblock In {\em Proceedings of the SIGCHI Conference on Human Factors in
+  Computing Systems}, ACM (2011), 1225--1234.
 
-\bibitem{Mather:2000:MUT}
-Mather, B.~D.
-\newblock Making up titles for conference papers.
-\newblock In {\em Ext. Abstracts CHI 2000}, ACM Press (2000), 1--2.
+\bibitem{jacob2003eye}
+Jacob, R.~J., and Karn, K.~S.
+\newblock Eye tracking in human-computer interaction and usability research:
+  Ready to deliver the promises.
+\newblock {\em Mind 2}, 3 (2003), 4.
 
-\bibitem{Schwartz:1995:GBF}
-Schwartz, M.
-\newblock {\em {Guidelines for Bias-Free Writing}}.
-\newblock Indiana University Press, 1995.
+\bibitem{lagun2011viewser}
+Lagun, D., and Agichtein, E.
+\newblock Viewser: Enabling large-scale remote user studies of web search
+  examination and interaction.
+\newblock In {\em Proceedings of the 34th international ACM SIGIR conference on
+  Research and development in Information Retrieval}, ACM (2011), 365--374.
 
-\bibitem{Zellweger:2001:FAO:504216.504224}
-Zellweger, P.~T., Bouvin, N.~O., Jeh{\o}j, H., and Mackinlay, J.~D.
-\newblock Fluid annotations in an open world.
-\newblock In {\em Proc. Hypertext 2001}, ACM Press (2001), 9--18.
+\bibitem{navalpakkam2012mouse}
+Navalpakkam, V., and Churchill, E.
+\newblock Mouse tracking: measuring and predicting users' experience of
+  web-based content.
+\newblock In {\em Proceedings of the SIGCHI Conference on Human Factors in
+  Computing Systems}, ACM (2012), 2963--2972.
+
+\bibitem{ozzie2011personal}
+Ozzie, R.~E., Gates~III, W.~H., Flake, G.~W., Bergstraesser, T.~F., Blinn,
+  A.~N., Brumme, C.~W., Cheng, L., Connolly, M., Dani, N.~V., Glasgow, D.~A.,
+  et~al.
+\newblock Personal data mining, Apr.~19 2011.
+\newblock US Patent 7,930,197.
+
+\bibitem{swan2009emerging}
+Swan, M.
+\newblock Emerging patient-driven health care models: an examination of health
+  social networks, consumer personalized medicine and quantified self-tracking.
+\newblock {\em International journal of environmental research and public
+  health 6}, 2 (2009), 492--525.
+
+\bibitem{wolf2010data}
+Wolf, G.
+\newblock The data-driven life.
+\newblock {\em The New York Times 28\/} (2010), 2010.
 
 \end{thebibliography}
