@@ -22,6 +22,8 @@
 \usepackage{graphics} % for EPS, load graphicx instead
 \usepackage{times}    % comment if you want LaTeX's default font
 \usepackage{url}      % llt: nicely formatted URLs
+\usepackage{epstopdf}
+
 
 % llt: Define a global style for URLs, rather that the default one
 \makeatletter
@@ -233,12 +235,10 @@ However, $w_i^{\min }$ is a minimum approximate of $w_i$, we can have a more acc
 scroll actions into consideration. In figure \ref{fig:neighbor_scroll}, we put the click data both before $i$th scroll(purple dots) and after $i+1$th(yellow dots).
 We can see there is a gap between two neighbor minimum approximates. So we can have a moderate estimate of $w_i$:
 
-
 \begin{equation} \label{eq:4}
 {w_i} = w_i^{\min } + ({g_1} + {g_2})/2
 \end{equation}
  
-
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.9\columnwidth]{pictures/neighbor-scroll}

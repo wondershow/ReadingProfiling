@@ -57,7 +57,7 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 			//captureAndDislayUserData();			
 			//sendDataByGet();
 			//sendJSONData();
-			captureAndDislayUserData();
+			//captureAndDislayUserData();
 			startReadingHint();
 			//showHeadLineToolips();
 			//getMouseTrajectory();
@@ -195,21 +195,7 @@ function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 	}
 }
 
-	/**
-		This function takes the mouse x,y and timestamp into consideration to 
-		detect a mouse scroll action
-	***/
-	var lastX;//mouse x before scrolling
-	var lastY;//moust y before scrolling
-	var lastTimeStamp;//the last event
-	function detectScroll(type,timeStamp,clientX,clientY,screenX,screenY,pageX,pageY) {
-		
-	
-	
-	
-	
-	
-	}
+
 
 
 	/**The following code illustrates how to submit json arrays to a google spread sheet 
@@ -268,10 +254,6 @@ function recordUnBlurEvent(event) {
 	processRawData('unblur',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 	return false;
 }
-
-
-
-
 
 
 /**
@@ -462,7 +444,7 @@ function startReadingHint()
 	if( $(result).text())
 	{ // if result exists
 		//Add a div to display a msg over the headline element, telling the subject to start
-		$("body").append("<div id='start_tag' style='position:absolute; top:100px;left:300px' > <font color='red' size='12px' face='serif'> <i> Please start from the headline </i></font> </div>");
+		
 		var destination = $(result).offset();
 		//alert("destination: " + destination.top + "," + destination.left);
 		$('#start_tag').css({top: destination.top, left: destination.left});
@@ -480,21 +462,165 @@ function startReadingHint()
 			//alert($(spanArray[0]).html());
 		}
 
+		showHeadLineToolips(result);
+
+
 		//scrollTo the 1st paragraph.
-		window.scrollTo(0,fistParaYOffset);
+		//window.scrollTo(0,fistParaYOffset);
 
 		//update pageHead object
 		pageHeadObj.pageHeadY = $(window).scrollTop();
 		pageHeadObj.timeStamp = new Date().getTime();
 
+		
+
 		//Start logging data and send it to background
-		captureAndDislayUserData();
+		//captureAndDislayUserData();
 	}
 }
 
 function showHeadLineToolips(headLine) {
-	var toolipDiv = document.createElement("div");
-	$(toolipDiv).html("Are you reading this article?<BR>Click to continue reading111");
-	$(toolipDiv).addClass("ui-tooltip");
-	$("body").append(toolipDiv);
+	//var toolipDiv = document.createElement("div");
+
+	//$(toolipDiv).html("Are you reading this article?<BR>Click to continue reading1234");
+	
+	//var pos = $(headLine).position();
+
+	//var width = $(headLine).outerWidth();
+
+	//$("body").append(toolipDiv);
+
+	
+	/*
+	$(headLine).qtip({
+		content: {
+			text: 'You may want to click on the blurred words to unblur it,clicl to start reading',
+			title: {
+				text: '',
+				button: 'Close' // Close button
+				}
+			},
+		show: {
+                ready: true,
+                // Show it straight away
+                modal: {
+                    on: true,
+                    // Make it modal (darken the rest of the page)...
+                    blur: false // ... but don't close the tooltip when clicked
+                }
+           },
+
+
+		position: {
+			my: 'top center',  // Position my top left...
+			at: 'bottom center', // at the bottom right of...
+			//target: $('.selector') // my target
+		},
+		hide: false
+
+	}); */
+
+	Confirm('Are you reading this article? \r Click OK to start reading',headLine, function(yes) {
+
+            if (yes) {
+                alert('You clicked YES!');
+				$('#qtip-myTooltip').remove();
+				
+				/*
+                // do something with yes
+                $.ajax({
+                    url: 'ajax/settings_form.php',
+                    data: 'asd',
+                    success: function(data, textStatus, jqXHR) {
+                        alert('success!');
+                        // .............
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('ERROR! textStatus: ' + textStatus + ', errorThrown: ' + errorThrown);
+                        console.log('errorThrown');
+                        console.log(errorThrown);
+                    }
+                }); */
+            }
+            else {
+                alert('You clicked CANCEL!');
+            }
+        });
 }
+
+	
+    function Confirm(question,ele,callback) {
+        // Content will consist of the question and ok/cancel buttons
+        var message = $('<p />', {
+            text: question
+        }),
+            ok = $('<button />', {
+                text: 'Ok',
+                click: function() {
+                    callback(true);
+                }
+				
+            }),
+            cancel = $('<button />', {
+                text: 'Cancel',
+                click: function() {
+                    callback(false);
+                }
+            });
+
+        dialogue(message.add(ok),ele, '');
+    }
+
+	    function dialogue(content,ele, title) {
+/* 
+   * Since the dialogue isn't really a tooltip as such, we'll use a dummy
+   * out-of-DOM element as our target instead of an actual element like document.body
+   */
+        $('<div />').qtip({
+			id: 'myTooltip',
+            content: {
+                text: content,
+                title: title
+            },
+            position: {
+                my: 'top center',
+                at: 'bottom center',
+                // Center it...
+                target: $(ele), // ... in the window
+				corner: {
+					target: 'topRight',
+					tooltip: 'bottomLeft'
+				}
+            },
+            show: {
+                ready: true,
+                // Show it straight away
+                modal: {
+                    on: true,
+                    // Make it modal (darken the rest of the page)...
+                    blur: false // ... but don't close the tooltip when clicked
+                }
+            },
+            hide: false,
+            // We'll hide it maunally so disable hide events
+            style: 'ui-tooltip-light ui-tooltip-rounded ui-tooltip-dialogue',
+            // Add a few styles
+            events: {
+                // Hide the tooltip when any buttons in the dialogue are clicked
+                render: function(event, api) {
+					//$(this).remove();
+					//alert("api.elements.content"+api.elements.content);
+					//alert("api.hide" + api.hide)
+					//var test = $('button', api.elements.content);
+					//alert("test = " + test);
+                    $('button', api.elements.content).click(api.hide);
+                },
+                // Destroy the tooltip once it's hidden as we no longer need it!
+                hide: function(event, api) {
+					//alert("I am here");
+                    api.destroy();
+                }
+            }
+        });
+    }
+
