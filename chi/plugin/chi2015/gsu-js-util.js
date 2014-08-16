@@ -241,7 +241,7 @@ function blurElement(ele) {
 	
 	var eleId = 'blrEle' + Math.floor(Math.random()*100000);
 	$(ele).attr('id',eleId);
-	$(ele).click(function(event){
+	$(ele).mouseover(function(event){
 		//alert(eleId);
 		unBlurElement(eleId);
 	});

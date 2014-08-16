@@ -37,17 +37,8 @@ userDataObjArr.dataLength = 0;
 //How many data items have been processed by the front side behavioral analysis algorithm
 userDataObjArr.cursorLength = 0; 
 
-
-
-
-
-
-
-
-
 //For display use
 var totalDataLength = 0;
-
 
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
