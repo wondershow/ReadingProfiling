@@ -449,7 +449,11 @@ function startReadingHint()
 		//alert("destination: " + destination.top + "," + destination.left);
 		$('#start_tag').css({top: destination.top, left: destination.left});
 		var pObj = getParagraphs(result);
+		var firstPara = pObj.paras[0];
+		
 		fistParaYOffset = getParaPosition(pObj.paras[0]);
+
+		
 		
 		for(var i=0;i<pObj.length;i++) {
 			$(pObj.paras[i]).lettering('words');
@@ -461,8 +465,9 @@ function startReadingHint()
 			//unBlurElement(spanArray[0]);
 			//alert($(spanArray[0]).html());
 		}
-
-		showHeadLineToolips(result);
+		
+		
+		showHeadLineToolips(result,fistParaYOffset);
 
 
 		//scrollTo the 1st paragraph.
@@ -479,7 +484,7 @@ function startReadingHint()
 	}
 }
 
-function showHeadLineToolips(headLine) {
+function showHeadLineToolips(headLine,fistParaYOffset) {
 	//var toolipDiv = document.createElement("div");
 
 	//$(toolipDiv).html("Are you reading this article?<BR>Click to continue reading1234");
@@ -520,12 +525,12 @@ function showHeadLineToolips(headLine) {
 
 	}); */
 
-	Confirm('Are you reading this article? \r Click OK to start reading',headLine, function(yes) {
-
+	Confirm('Are you reading this article? \r Click OK to start reading',headLine, fistParaYOffset,function(yes) {
             if (yes) {
-                alert('You clicked YES!');
 				$('#qtip-myTooltip').remove();
-				
+				$('html,body').animate({
+					scrollTop: fistParaYOffset
+				}, 1000);
 				/*
                 // do something with yes
                 $.ajax({
@@ -546,10 +551,12 @@ function showHeadLineToolips(headLine) {
                 alert('You clicked CANCEL!');
             }
         });
+
+		
 }
 
 	
-    function Confirm(question,ele,callback) {
+    function Confirm(question,ele,firstparagrah, callback) {
         // Content will consist of the question and ok/cancel buttons
         var message = $('<p />', {
             text: question
