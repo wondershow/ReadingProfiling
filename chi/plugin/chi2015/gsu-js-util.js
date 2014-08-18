@@ -178,6 +178,7 @@ function getParagraphs(titleEl) {
 	
 	
 	var count = 0;
+
 	$(ele).find( "p" ).filter(function () {
 		if($(this).css('font-family') === fontStr && ($(this).css('font-size')).indexOf(fontSizeStr) >= 0) {
 			//alert( $(this).css('font-family') + "," + $(this).css('font-size') + "," + $(this).html());
@@ -237,15 +238,57 @@ function getWindowRange() {
 **/
 function blurElement(ele) {
 	$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
+	var eleId = 'blrEle' + Math.floor(Math.random()*100000);
+	$(ele).attr('id',eleId);
+	$(ele).mouseover(function(event){
+		
 
-	
+		//user an if statement to filter scroll action which could have accidentally unblurred an element
+		if(event.clientY != lastCursorPos.clientY) {
+			
+			unBlurElement(eleId);
+		}
+	});
+}
+
+/**
+	To add blur effect to last word in an article, 
+	the mouseover should popup a messge asking user to 
+	confirm end of reading
+**/
+function blurLastSpan(ele) {
+	$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
 	var eleId = 'blrEle' + Math.floor(Math.random()*100000);
 	$(ele).attr('id',eleId);
 	$(ele).mouseover(function(event){
 		//alert(eleId);
-		unBlurElement(eleId);
+		unBlurLastSpan(eleId);
 	});
 }
+
+
+/**
+	To unblur last word and pop up a messge asking user to 
+	confirm end of reading
+**/
+function unBlurLastSpan(spanId) {
+	unBlurElement(spanId);
+	
+	var span = document.getElementById(spanId);
+	var offset = $(span).offset.top;
+
+	var r = confirm("Have you finished reading this article?");
+	if (r == true) {
+		alert("Thank you very much!");
+	} else {
+		blurLastSpan(span);
+		alert("Then please keep reading");
+	}
+
+	
+}
+
+
 
 /**
 	To remove the blur effect of an element.

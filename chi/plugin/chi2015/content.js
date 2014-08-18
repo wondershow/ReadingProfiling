@@ -26,7 +26,6 @@ var lastScrollTimeStamp = 0;
 //have a time interval of SCROLL_TIMESPAN milliseconds
 var SCROLL_TIMESPAN = 1000;
 
-
 //userDataObjArr is for front-end behavioral analysis analysis use
 var userDataObjArr = {};
 userDataObjArr.dataList = [];
@@ -39,6 +38,16 @@ userDataObjArr.cursorLength = 0;
 
 //For display use
 var totalDataLength = 0;
+
+
+/**
+object to hold where last curser event happened
+*/
+var lastCursorPos = {};
+lastCursorPos.clientX = 0;
+lastCursorPos.clientY = 0;
+lastCursorPos.pageX = 0;
+lastCursorPos.pageY = 0;
 
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
@@ -108,8 +117,6 @@ function testHTTPS() {
 }
 
 
-
-
 /***
 This function detects an intentional scroll
 **/
@@ -146,6 +153,21 @@ Date.prototype.yyyymmdd = function() {
    return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
 };
 
+
+/*
+	To update lastCursor position
+*/
+function updateLastCursor(client_X,client_Y,page_X,page_Y) {
+	lastCursorPos.clientX = client_X;
+	lastCursorPos.clientY = client_Y;
+	lastCursorPos.pageX = page_X;
+	lastCursorPos.pageY = page_Y;
+
+
+
+}
+
+
 /**
 	This function handles all the raw data gotten from a user behavior. 
 	It creates an object for each raw data item, put it into a collection(array).
@@ -164,13 +186,13 @@ function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 	//we need to create two identical data item, one for send one for front-end analysis
 	var new_obj1 = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
 				   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
+	updateLastCursor(clientX,clientY,pageX,pageY);
 
 	totalDataLength++;
-	
+
 	//Put data into front-end storage Array
 	userDataObjArr.dataList.push(new_obj1);
 	userDataObjArr.dataLength++;
-
 
 	//put data into cache array for ajax send
 	var curItemIndex = jsonSendObjArr.curItem;
@@ -242,6 +264,7 @@ function getClickXY(event){
 }
 
 function recordUnBlurEvent(event) {
+	//console.log("unblur element clientY = "  + event.clientY + ", event.pageY = " + event.pageY);
 	processRawData('unblur',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 	return false;
 }
@@ -450,12 +473,16 @@ function startReadingHint()
 			$(pObj.paras[i]).lettering('words');
 		}
 		
+		var spanArray;
 		for(var i=0;i<pObj.length;i++) {
-			var spanArray = $(pObj.paras[i]).children('span')
+			spanArray = $(pObj.paras[i]).children('span')
 			blurElement(spanArray[0]);
 			//unBlurElement(spanArray[0]);
 			//alert($(spanArray[0]).html());
 		}
+
+		//set up the js for last word in the article.
+		blurLastSpan(spanArray[spanArray.length-1])
 		
 		
 		showHeadLineToolips(result,fistParaYOffset);
@@ -475,6 +502,14 @@ function startReadingHint()
 	}
 }
 
+
+function displayReadingOverMsg(spanEle) {
+	
+
+
+
+}
+
 function showHeadLineToolips(headLine,fistParaYOffset) {
 	//var toolipDiv = document.createElement("div");
 
@@ -485,7 +520,9 @@ function showHeadLineToolips(headLine,fistParaYOffset) {
 	//var width = $(headLine).outerWidth();
 
 	//$("body").append(toolipDiv);
-
+	var test = prompt("Can you please tell us your name? ");
+	alert("Thanks " + test + "!, please start reading");
+	
 	
 	/*
 	$(headLine).qtip({
@@ -516,34 +553,25 @@ function showHeadLineToolips(headLine,fistParaYOffset) {
 
 	}); */
 
+
+	
+
+
+	//Alert();
+
+	/*
 	Confirm('Are you reading this article? \r Click OK to start reading',headLine, fistParaYOffset,function(yes) {
             if (yes) {
 				$('#qtip-myTooltip').remove();
 				$('html,body').animate({
 					scrollTop: fistParaYOffset
 				}, 1000);
-				/*
-                // do something with yes
-                $.ajax({
-                    url: 'ajax/settings_form.php',
-                    data: 'asd',
-                    success: function(data, textStatus, jqXHR) {
-                        alert('success!');
-                        // .............
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        alert('ERROR! textStatus: ' + textStatus + ', errorThrown: ' + errorThrown);
-                        console.log('errorThrown');
-                        console.log(errorThrown);
-                    }
-                }); */
+		
             }
             else {
                 alert('You clicked CANCEL!');
             }
-        });
-
-		
+        });*/
 }
 
 	
@@ -570,7 +598,7 @@ function showHeadLineToolips(headLine,fistParaYOffset) {
     }
 
 	    function dialogue(content,ele, title) {
-/* 
+	/* 
    * Since the dialogue isn't really a tooltip as such, we'll use a dummy
    * out-of-DOM element as our target instead of an actual element like document.body
    */
@@ -591,14 +619,13 @@ function showHeadLineToolips(headLine,fistParaYOffset) {
 				}
             },
             show: {
-                ready: true,
-                // Show it straight away
-                modal: {
-                    on: true,
-                    // Make it modal (darken the rest of the page)...
-                    blur: false // ... but don't close the tooltip when clicked
-                }
-            },
+                    ready: true, // Show it straight away
+                    modal: {
+                        on: true, // Make it modal (darken the rest of the page)...
+                        blur: false, // ... but don't close the tooltip when clicked
+                        escape: false //dont hide on escape button 
+                    }
+                },
             hide: false,
             // We'll hide it maunally so disable hide events
             style: 'ui-tooltip-light ui-tooltip-rounded ui-tooltip-dialogue',
@@ -620,5 +647,12 @@ function showHeadLineToolips(headLine,fistParaYOffset) {
                 }
             }
         });
+		var body = document.querySelectorAll("body");
+		if(body.length === 0) {
+		alert("There are no any divs in the page.");
+		} else {
+			$(body[0]).qtip('distroy');
+		}
     }
+
 

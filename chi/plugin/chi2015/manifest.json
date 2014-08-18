@@ -29,7 +29,7 @@
     {
       "matches": ["http://*/*", "https://*/*"],
       "js": ["jquery-2.1.1.js","jquery-ui.js","content.js","gsu-js-util.js","jquery.lettering.js","jquery.qtip.js"],
-      "css": [ "jquery-ui.css","gsu-ui.css","jquery.qtip.css"]
+      "css": [ "jquery.css","jquery-ui.css","gsu-ui.css","jquery.qtip.css"]
     }
   ],
 
