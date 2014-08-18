@@ -94,15 +94,24 @@ function getDataTable() {
   return res;
 }
 
-function createChartUiApp() {
+function createChartUiApp(win_w,win_h,page_w,page_h) {
+  
+   Logger.log("win_w = " + win_w);
+   Logger.log("win_h = " + win_h)
+   Logger.log("page_w = " + page_w)
+   Logger.log("page_h = " + page_h)
   
    dataObj = getDataTable();
-  
+   
    var mousePageChartBuilder = Charts.newScatterChart()
        .setTitle('User Mouse Map(Global)')
        .setXAxisTitle('Page X')
        .setYAxisTitle('Page Y')
        .setDimensions(500, 500)
+       .setOption('pointSize', 1)
+       .setOption('vAxis.direction', -1)
+       .setXAxisRange(0, page_w)
+       .setYAxisRange(0, page_h)
        .setLegendPosition(Charts.Position.NONE);
    
    var mouseScreenChartBuilder = Charts.newScatterChart()
@@ -110,6 +119,10 @@ function createChartUiApp() {
        .setXAxisTitle('Screen X')
        .setYAxisTitle('Screen Y')
        .setDimensions(500, 500)
+       .setOption('pointSize', 1)
+       .setOption('vAxis.direction', -1)
+       .setXAxisRange(0, win_w)
+       .setYAxisRange(0, win_h)
        .setLegendPosition(Charts.Position.NONE);
   
   var clickPageChartBuilder = Charts.newScatterChart()
@@ -117,6 +130,10 @@ function createChartUiApp() {
        .setXAxisTitle('Page X')
        .setYAxisTitle('Page Y')
        .setDimensions(500, 500)
+       .setOption('pointSize', 1)
+       .setOption('vAxis.direction', -1)
+       .setXAxisRange(0, page_w)
+       .setYAxisRange(0, page_h)
        .setLegendPosition(Charts.Position.NONE);
   
   var clickScreenChartBuilder = Charts.newScatterChart()
@@ -124,6 +141,10 @@ function createChartUiApp() {
        .setXAxisTitle('Screen X')
        .setYAxisTitle('Screen Y')
        .setDimensions(500, 500)
+       .setOption('pointSize', 1)
+       .setOption('vAxis.direction', -1)
+       .setXAxisRange(0, win_w)
+       .setYAxisRange(0, win_h)
        .setLegendPosition(Charts.Position.NONE);
    
   
@@ -173,6 +194,11 @@ function createChart(srcURL) {
 }
 
 function doGet(e) { // change to doPost(e) if you are recieving POST data
+  var win_h = e.parameter['win_h'];
+  var win_w = e.parameter['win_w'];
+  var page_h = e.parameter['page_h'];
+  var page_w = e.parameter['page_w'];
+  
   
   /*
   var data = Charts.newDataTable()
@@ -237,7 +263,7 @@ function doGet(e) { // change to doPost(e) if you are recieving POST data
   
   
   
-  return createChartUiApp();
+  return createChartUiApp(win_w , win_h,page_w,page_h);
   
   /*
   var ss = SpreadsheetApp.openById(ScriptProperties.getProperty('active'));
@@ -347,7 +373,7 @@ function setUp() {
 }
 
 function testMaxRow() {
- 
+ createChartUiApp(640,1349,2500,2349)
 }
 
 /**
@@ -360,6 +386,5 @@ function delAllRows() {
   var range = sheet.getDataRange();
   var lastRow = range.getLastRow()
   
-  sheet.deleteRows(2, lastRow-1)
+  sheet.deleteRows(500, lastRow-1)
 }
-
