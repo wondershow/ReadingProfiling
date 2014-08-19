@@ -332,3 +332,18 @@ function cloneEventObj(eventObj, overrideObj){
     return new EventCloneFactory(overrideObj);
 
 }
+
+
+/**
+To send a request to remote server by ajax
+**/
+function ajaxRequest(removeurl) {
+	$.ajax({
+		type: "GET",
+		url: removeurl,
+		cache: false,
+		success: function(data){
+			//alert("success")
+		}
+	});
+}

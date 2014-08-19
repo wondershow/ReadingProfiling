@@ -49,6 +49,12 @@ lastCursorPos.clientY = 0;
 lastCursorPos.pageX = 0;
 lastCursorPos.pageY = 0;
 
+//the webservice url
+var WEB_SERVICE_URL = 'https://script.google.com/macros/s/AKfycbwkbRhGvACgigHBcNLgW_mGnWSxkuGhzNAxqgk-76yQemxi7ZE/exec';
+					   
+                       
+					   
+
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
 		case "colors-div":
@@ -59,7 +65,8 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 			//sendJSONData();
 			//captureAndDislayUserData();
 			startReadingHint();
-			//showHeadLineToolips();
+			captureAndDislayUserData();
+			//promtSubjectName();
 			//getMouseTrajectory();
 			/*
 			var divs = document.querySelectorAll("div");
@@ -93,6 +100,16 @@ function captureAndDislayUserData() {
 		//win.addEventListener("scroll",showMouseScroll,false);
 	}
 }
+
+
+function sendBasicSettings() {
+	var url = WEB_SERVICE_URL + '?type=record&win_h=' + $(window).height()
+		+ "&win_w=" + $(window).width() +  "&page_w=" + $(document).width()
+		+ "&page_h=" + $(document).height();
+	console.log(url);
+	ajaxRequest(url);
+}
+
 
 function getScreenSize() {
 	console.log("windows.height:" + $(window).height());   // returns height of browser viewport
@@ -162,9 +179,6 @@ function updateLastCursor(client_X,client_Y,page_X,page_Y) {
 	lastCursorPos.clientY = client_Y;
 	lastCursorPos.pageX = page_X;
 	lastCursorPos.pageY = page_Y;
-
-
-
 }
 
 
@@ -174,6 +188,8 @@ function updateLastCursor(client_X,client_Y,page_X,page_Y) {
 	Send data to remote server if necessary.
 ***/
 function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
+
+	
 	var timestamp = new Date().getTime();
 	var date = new Date(timestamp);
 	//console.log("timestamp = " + timestamp + ", ");
@@ -225,7 +241,7 @@ function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 
 		$.ajax({
 			   type: "POST",
-			   url: "https://script.google.com/macros/s/AKfycbyNQLA7ZiDQMnMorpW6kyqIcmA5CdDe4Ho_39rz4Whj1nB_hTQ/exec",
+			   url: WEB_SERVICE_URL,
 			   dataType: "json",
 			   success: function (msg) {
 				   //console.log(arguments);
@@ -387,7 +403,7 @@ $("body").click(function(event){
 
 
 
-
+	
 	
 
 
@@ -484,8 +500,11 @@ function startReadingHint()
 		//set up the js for last word in the article.
 		blurLastSpan(spanArray[spanArray.length-1])
 		
+		//to ask the subject to input his/her name
+		promtSubjectName(result);
+
 		
-		showHeadLineToolips(result,fistParaYOffset);
+		sendBasicSettings();
 
 
 		//scrollTo the 1st paragraph.
@@ -510,68 +529,15 @@ function displayReadingOverMsg(spanEle) {
 
 }
 
-function showHeadLineToolips(headLine,fistParaYOffset) {
-	//var toolipDiv = document.createElement("div");
-
-	//$(toolipDiv).html("Are you reading this article?<BR>Click to continue reading1234");
+function promtSubjectName(headLine) {
 	
-	//var pos = $(headLine).position();
+	var name = prompt("Can you please tell us your name? ");
 
-	//var width = $(headLine).outerWidth();
+	var fullURL = WEB_SERVICE_URL + "?type=create&user_name=" + encodeURIComponent(name.trim());
 
-	//$("body").append(toolipDiv);
-	var test = prompt("Can you please tell us your name? ");
-	alert("Thanks " + test + "!, please start reading");
-	
-	
-	/*
-	$(headLine).qtip({
-		content: {
-			text: 'You may want to click on the blurred words to unblur it,clicl to start reading',
-			title: {
-				text: '',
-				button: 'Close' // Close button
-				}
-			},
-		show: {
-                ready: true,
-                // Show it straight away
-                modal: {
-                    on: true,
-                    // Make it modal (darken the rest of the page)...
-                    blur: false // ... but don't close the tooltip when clicked
-                }
-           },
+	ajaxRequest(fullURL);
 
-
-		position: {
-			my: 'top center',  // Position my top left...
-			at: 'bottom center', // at the bottom right of...
-			//target: $('.selector') // my target
-		},
-		hide: false
-
-	}); */
-
-
-	
-
-
-	//Alert();
-
-	/*
-	Confirm('Are you reading this article? \r Click OK to start reading',headLine, fistParaYOffset,function(yes) {
-            if (yes) {
-				$('#qtip-myTooltip').remove();
-				$('html,body').animate({
-					scrollTop: fistParaYOffset
-				}, 1000);
-		
-            }
-            else {
-                alert('You clicked CANCEL!');
-            }
-        });*/
+	alert("Thanks " + name + "!, please start reading");
 }
 
 	
