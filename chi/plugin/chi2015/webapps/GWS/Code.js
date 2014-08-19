@@ -33,6 +33,10 @@ function doGet(e) {
     var win_w = e.parameter['win_w'];
     var page_h = e.parameter['page_h'];
     var page_w = e.parameter['page_w'];
+    var firstY = e.parameter['firstwordY'];
+    var lastY = e.parameter['lastwordY'];
+    var headlineY = e.parameter['headlineY'];
+    
     
     var d = new Date();
     var timeStamp = d.toLocaleDateString() + " " + d.toLocaleTimeString()
@@ -46,13 +50,12 @@ function doGet(e) {
     var res = getDataFromSpreadSheet('curSSname',"username",subjectSheet,'Admin');
     var dataSheetName = res[0];
     
-    
-    
+   
     //file = openFileWithPath('chi2015',dataSheetName);
     //ss = SpreadsheetApp.openById(file.getId());
-    //var dataSheet = ss.getSheets()[0];
-    var colArr = ['date','ssname','win_w','win_h','page_w','page_h'];
-    var valArr = [timeStamp,dataSheetName,win_w,win_h,page_w,page_h];
+    //var dataSheet = ss.getSheets()[0];                             
+    var colArr = ['date','ssname','win_w','win_h','page_w','page_h','firstword_y','lastword_y','headline_y'];
+    var valArr = [timeStamp,dataSheetName,win_w,win_h,page_w,page_h,firstY,lastY,headlineY];
     Logger.log("colArr:" + colArr);
     Logger.log("valArr:" + valArr);
     insertIntoTable(colArr,valArr,subjectSheet);

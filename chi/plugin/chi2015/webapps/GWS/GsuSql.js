@@ -193,14 +193,16 @@ function insertIntoTable(colArr, valArr, sheet) {
   //populate the fullRow with values given by the caller
   for (var j=0;j<headers.length;j++) {
     var colName = headers[j]
+    Logger.log(  "To be compared =" + colName)
     for(i =0;i<colArr.length;i++) {
       if(colArr[i] == colName) {
         fullRow[j] = valArr[i];
+        Logger.log( colName + "=" +  fullRow[j])
         break;
       }
     }
   }
- 
+  Logger.log("fullRow="+fullRow)
   sheet.appendRow(fullRow);
 }
 
@@ -209,7 +211,7 @@ function test() {
  
 
   
-  var win_h = 1
+    var win_h = 1
     var win_w = 2
     var page_h = 3
     var page_w = 4

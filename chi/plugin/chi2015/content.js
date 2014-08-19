@@ -51,8 +51,15 @@ lastCursorPos.pageY = 0;
 
 //the webservice url
 var WEB_SERVICE_URL = 'https://script.google.com/macros/s/AKfycbwkbRhGvACgigHBcNLgW_mGnWSxkuGhzNAxqgk-76yQemxi7ZE/exec';
-					   
-                       
+
+//The Y value of the first and last word, which helps to get the page height
+var lastWordY;
+var fistWordY;
+var headlineY;
+//The vertical length of that article
+//var articleHight;
+
+
 					   
 
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
@@ -105,7 +112,9 @@ function captureAndDislayUserData() {
 function sendBasicSettings() {
 	var url = WEB_SERVICE_URL + '?type=record&win_h=' + $(window).height()
 		+ "&win_w=" + $(window).width() +  "&page_w=" + $(document).width()
-		+ "&page_h=" + $(document).height();
+		+ "&page_h=" + $(document).height() + "&firstwordY=" + fistWordY
+		+ "&lastwordY=" + lastWordY + "&headlineY=" +headlineY;
+    
 	console.log(url);
 	ajaxRequest(url);
 }
@@ -459,6 +468,8 @@ function getParaPosition(para) {
 	$(para).html(html);
 	var firstSpan = document.getElementById(tmpSpanId);
 	var offset = $(firstSpan).offset();
+	
+	fistWordY = offset.top;
 	return offset.top;
 }
 
@@ -469,13 +480,14 @@ function startReadingHint()
 	
 	//the vertical offset of the 1st paragraph
 	var fistParaYOffset = undefined;
-	//$("#vote")
 	
 	if( $(result).text())
 	{ // if result exists
 		//Add a div to display a msg over the headline element, telling the subject to start
 		
 		var destination = $(result).offset();
+		headlineY = destination.top;
+
 		//alert("destination: " + destination.top + "," + destination.left);
 		$('#start_tag').css({top: destination.top, left: destination.left});
 		var pObj = getParagraphs(result);
@@ -489,6 +501,8 @@ function startReadingHint()
 			$(pObj.paras[i]).lettering('words');
 		}
 		
+
+
 		var spanArray;
 		for(var i=0;i<pObj.length;i++) {
 			spanArray = $(pObj.paras[i]).children('span')
@@ -497,6 +511,10 @@ function startReadingHint()
 			//alert($(spanArray[0]).html());
 		}
 
+		
+
+		lastWordY = $(spanArray[spanArray.length-1]).offset().top;
+
 		//set up the js for last word in the article.
 		blurLastSpan(spanArray[spanArray.length-1])
 		
@@ -504,7 +522,9 @@ function startReadingHint()
 		promtSubjectName(result);
 
 		
-		sendBasicSettings();
+		
+		
+		//sendBasicSettings();
 
 
 		//scrollTo the 1st paragraph.

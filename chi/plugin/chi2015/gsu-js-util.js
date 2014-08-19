@@ -280,6 +280,7 @@ function unBlurLastSpan(spanId) {
 	var r = confirm("Have you finished reading this article?");
 	if (r == true) {
 		alert("Thank you very much!");
+		sendBasicSettings();
 	} else {
 		blurLastSpan(span);
 		alert("Then please keep reading");
@@ -338,6 +339,7 @@ function cloneEventObj(eventObj, overrideObj){
 To send a request to remote server by ajax
 **/
 function ajaxRequest(removeurl) {
+	console.log("sendout ajax get: " +removeurl);
 	$.ajax({
 		type: "GET",
 		url: removeurl,
