@@ -281,6 +281,7 @@ function unBlurLastSpan(spanId) {
 	if (r == true) {
 		alert("Thank you very much!");
 		sendBasicSettings();
+		sendJSONData();
 	} else {
 		blurLastSpan(span);
 		alert("Then please keep reading");

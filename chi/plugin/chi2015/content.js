@@ -268,6 +268,8 @@ function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
 			   data: JSON.stringify(jsonSendObjArr.objList[curObjIndex])
 		});
 	}
+
+	
 	
 	/***
 		To clean the send obj array.
@@ -511,8 +513,7 @@ function startReadingHint()
 			//alert($(spanArray[0]).html());
 		}
 
-		
-
+	
 		lastWordY = $(spanArray[spanArray.length-1]).offset().top;
 
 		//set up the js for last word in the article.
