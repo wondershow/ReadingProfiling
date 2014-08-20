@@ -63,7 +63,6 @@ function getHeadLine()
 	return result;
 }
 
-
 /**
 	This function helps to remove 
 	all HTML tags from a given string
@@ -349,4 +348,23 @@ function ajaxRequest(removeurl) {
 			//alert("success")
 		}
 	});
+}
+
+
+/**
+Given a paragrah html object,
+return the position of its first html word.
+notice that the position is the vertical offset of the document.
+**/
+function getParaPosition(para) {
+	var html =$(para).html();
+	var firstWord = getFirstWordFromHTML(html);
+	var tmpSpanId = 'tmpSpanStartReadingHint';
+	html = html.replace(firstWord, "<span id='" + tmpSpanId + "'>" + firstWord +  "</span>" );
+	$(para).html(html);
+	var firstSpan = document.getElementById(tmpSpanId);
+	var offset = $(firstSpan).offset();
+	
+	fistWordY = offset.top;
+	return offset.top;
 }
