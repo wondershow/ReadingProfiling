@@ -128,9 +128,17 @@ var headlineY;
 		To detect the mouse position
 	**/
 	function showMouseMove(event) {
-		//console.log("mouse move  X:" + event.clientX + ",Y:"+event.clientY + ",Page X:" + event.pageX + " Y: " + event.pageY);
-		//console.log("mouse X:" + event.clientX + ",Y:"+event.clientY);
-		processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+		var dataObj = {
+			'Type' : 'mouse',
+			'ClientX':event.clientX,
+			'ClientY':event.clientY,
+			'ScreenX':event.screenX,
+			'ScreenY':event.screenY,
+			'PageX':event.pageX,
+			'PageY':event.pageY,
+		}
+		processRawData(dataObj);
+		//processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 		return false;
 	}
 
@@ -156,13 +164,17 @@ var headlineY;
 		It creates an object for each raw data item, put it into a collection(array).
 		Send data to remote server if necessary.
 	***/
-	function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
-		
+	//function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
+	function processRawData(dataObj) {
 		var timestamp = new Date().getTime();
 		var date = new Date(timestamp);
 		//console.log("timestamp = " + timestamp + ", ");
 		var dateString = date.getFullYear() + '/' + (date.getMonth()+1) + '/' +  date.getDate()  + ' '
 						  + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+		
+		dataObj.Timestamp = timestamp + "s";
+		dataObj.Date = dateString;
+		/*
 		//console.log("timestamp = " + timestamp + ", dateString = " + dateString);
 		var new_obj = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
 					   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
@@ -170,24 +182,26 @@ var headlineY;
 		//we need to create two identical data item, one for send one for front-end analysis
 		var new_obj1 = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
 					   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
-
-		updateLastCursor(clientX,clientY,pageX,pageY);
+		*/
+		updateLastCursor(dataObj.ClientX,dataObj.ClientY,dataObj.PageX,dataObj.PageY);
+		
+	
 
 		totalDataLength++;
 
 		//Put data into front-end storage Array
-		userDataObjArr.dataList.push(new_obj1);
-		userDataObjArr.dataLength++;
+		//userDataObjArr.dataList.push(new_obj1);
+		//userDataObjArr.dataLength++;
 
 		//put data into cache array for ajax send
 		var curItemIndex = jsonSendObjArr.curItem;
-		jsonSendObjArr.objList[curItemIndex].dataList.push(new_obj);      //jsonSendObj.itemList.push( new_obj );
+		jsonSendObjArr.objList[curItemIndex].dataList.push(dataObj);      //jsonSendObj.itemList.push( new_obj );
 		
 		//when necessary, send the data.
 		if(jsonSendObjArr.objList[curItemIndex].dataList.length >= MAX_SENDOBJ_LENGTH) {
 			console.log("send json data, totalDataLength = " + totalDataLength + ", curItemIndex = " 
 						+ curItemIndex + ", len = " + jsonSendObjArr.objList[curItemIndex].dataList.length);
-			console.log("Length of array is " + userDataObjArr.dataList.length);
+			console.log("Length of array is " + totalDataLength);
 			jsonSendObjArr.curItem = (jsonSendObjArr.curItem + 1) % OBJ_ARR_LENGTH;
 			sendJSONData();
 		}
@@ -234,8 +248,18 @@ var headlineY;
 		This function get and display coordinate of a mouse click event.
 	***/
 	function getClickXY(event){
-		//console.log("mouse X:" + event.clientX + ",Y:"+event.clientY);
-		processRawData('click',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+		var dataObj = {
+			'Type' : 'click',
+			'ClientX':event.clientX,
+			'ClientY':event.clientY,
+			'ScreenX':event.screenX,
+			'ScreenY':event.screenY,
+			'PageX':event.pageX,
+			'PageY':event.pageY,
+		}
+		processRawData(dataObj);
+
+		//processRawData('click',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 		return false;
 	}
 
@@ -243,8 +267,17 @@ var headlineY;
 		To log unblur action
 	*/
 	function recordUnBlurEvent(event) {
-		//console.log("unblur element clientY = "  + event.clientY + ", event.pageY = " + event.pageY);
-		processRawData('unblur',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
+		var dataObj = {
+			'Type' : 'unblur',
+			'ClientX':event.clientX,
+			'ClientY':event.clientY,
+			'ScreenX':event.screenX,
+			'ScreenY':event.screenY,
+			'PageX':event.pageX,
+			'PageY':event.pageY,
+		}
+		processRawData(dataObj);
+		//processRawData('unblur',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 		return false;
 	}
 
