@@ -1,7 +1,7 @@
 var selElem = null; // store the currently selected element
 var origBorder = "";
 var HEADLINE_TOOLIP_ID = 'headline_toolip';
-
+var ifReadingOver = false;
 //jsonSendObjArr is for data exchange use
 var MAX_SENDOBJ_LENGTH = 200;
 var OBJ_ARR_LENGTH = 5;
@@ -107,10 +107,26 @@ var headlineY;
 		if( (curTimeStamp - lastScrollTimeStamp) >  SCROLL_TIMESPAN) {// scroll detected
 			var deltaOffset = $(window).scrollTop() - pageHeadObj.pageHeadY;
 			var deltaTime = curTimeStamp -  pageHeadObj.timeStamp;
+			
+
+			console.log("real Scroll detected: y Delta = " + deltaOffset + ", timeDelta = " +deltaTime 
+				+ ",From:" + pageHeadObj.pageHeadY + "To: " + $(window).scrollTop());
+
+			
+			
+
+			var dataObj = {
+				'Type' : 'scroll',
+				'From':pageHeadObj.pageHeadY,
+				'To':$(window).scrollTop(),
+				'TimeDelta':deltaTime,
+				'YDelta':deltaOffset,
+			}
+
+			processRawData(dataObj);
 
 			pageHeadObj.pageHeadY = $(window).scrollTop();
 			pageHeadObj.timeStamp = curTimeStamp;
-			console.log("real Scroll detected: y Delta = " + deltaOffset + ", timeDelta = " +deltaTime );
 		}
 
 	}
@@ -214,26 +230,27 @@ var headlineY;
 		//jsonSendObjArr.lastSendItm = jsonSendObjArr.curItem;
 		var curObjIndex = jsonSendObjArr.lastSendItm;
 		jsonSendObjArr.lastSendItm = (jsonSendObjArr.lastSendItm + 1) % OBJ_ARR_LENGTH;
+		
+		if( ifReadingOver == false) // send before the user confirms that the reading is over 
+			$.ajax({
+				   type: "POST",
+				   url: WEB_SERVICE_URL,
+				   dataType: "json",
+				   success: function (msg) {
+					   //console.log(arguments);
+					   //alert('success')
+					   cleanSendObjArray(curObjIndex);
+				   },
+				   error: function(XMLHttpRequest, textStatus, errorThrown) {
+				   
+						//console.log(arguments);
+						//alert("Status: " + textStatus);
+						//alert("Error: " + errorThrown);
+					  cleanSendObjArray(curObjIndex);
 
-		$.ajax({
-			   type: "POST",
-			   url: WEB_SERVICE_URL,
-			   dataType: "json",
-			   success: function (msg) {
-				   //console.log(arguments);
-				   //alert('success')
-				   cleanSendObjArray(curObjIndex);
-			   },
-			   error: function(XMLHttpRequest, textStatus, errorThrown) {
-			   
-					//console.log(arguments);
-					//alert("Status: " + textStatus);
-					//alert("Error: " + errorThrown);
-				  cleanSendObjArray(curObjIndex);
-
-			   },
-			   data: JSON.stringify(jsonSendObjArr.objList[curObjIndex])
-		});
+				   },
+				   data: JSON.stringify(jsonSendObjArr.objList[curObjIndex])
+			});
 	}
 
 	/***

@@ -280,7 +280,9 @@ function unBlurLastSpan(spanId) {
 	if (r == true) {
 		alert("Thank you very much!");
 		sendBasicSettings();
+		$(span).mouseover(function(event){});
 		sendJSONData();
+		ifReadingOver = true;
 	} else {
 		blurLastSpan(span);
 		alert("Then please keep reading");
