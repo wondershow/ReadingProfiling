@@ -241,11 +241,8 @@ function blurElement(ele) {
 		var eleId = 'blrEle' + Math.floor(Math.random()*1000000);
 		//save this element id into the global linked list
 		g_bluredItemList.add(eleId);
-		console.log("html: '" + $(ele).html()  + "'  ,id=" + eleId);
-		//console.log("Adding ID : " + eleId);
 		$(ele).attr('id',eleId);
 		$(ele).mouseover(function(event){
-		//use an if statement to filter scroll action which could have accidentally unblurred an element
 			if(event.clientY != lastCursorPos.clientY) {
 				unBlurElement(eleId);
 			}
@@ -264,7 +261,6 @@ function blurLastSpan(ele) {
 		var eleId = 'blrEle' + Math.floor(Math.random()*100000);
 		g_bluredItemList.add(eleId);
 		$(ele).attr('id',eleId);
-		console.log("bluring last element, its id is " + eleId);
 		$(ele).mouseover(function(event){
 			unBlurLastSpan(eleId);
 		});
@@ -276,14 +272,6 @@ function blurLastSpan(ele) {
 	confirm end of reading
 **/
 function unBlurLastSpan(spanId) {
-	/*
-	console.log("unbluring last element");
-	if (g_bluredItemList.start.data != spanId)
-		return;
-	else
-		g_bluredItemList.delete(spanId);
-
-	unBlurElement(spanId);*/
 	
 	var span = document.getElementById(spanId);
 	var offset = $(span).offset.top;
@@ -305,25 +293,16 @@ function unBlurLastSpan(spanId) {
 	To remove the blur effect of an element.
 **/
 function unBlurElement(id) {
-	var ele1 = document.getElementById(id);
-	var ele2 = document.getElementById(g_bluredItemList.start.data);
-	console.log("I am trying to delete " + id + ", the head id is " +g_bluredItemList.start.data 
-			+ "first content is '" + $(ele1).html() +  "'"
-		    + "secod content is '" + $(ele2).html() +  "'")	
+	
 	if (g_bluredItemList.start.data != id)
 		return;
 	else
 		g_bluredItemList.delete(id);
-	console.log("new head id is :" + g_bluredItemList.start.data);
 
-	//alert("id = " + id);
 	var ele = document.getElementById(id);
-	//var ele = $('#'+id);
-	//alert($('#'+id).length);
-	//var ele = $('#'+id);
-	//alert("is ele null " + ele);
 	$(ele).css('color', '').css('text-shadow', '');
-	$(ele).click(recordUnBlurEvent(event));
+	$(ele).click(recordUnBlurEvent(event,id));
+
 }
 
 function cloneEventObj(eventObj, overrideObj){
@@ -356,7 +335,6 @@ function ajaxRequest(removeurl) {
 		}
 	});
 }
-
 
 /**
 Given a paragrah html object,

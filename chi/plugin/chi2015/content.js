@@ -59,6 +59,9 @@ var headlineY;
 
 
 var g_bluredItemList = new List();
+var g_lastUnbluredId = undefined;
+
+
 
 
 	chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
@@ -99,7 +102,6 @@ var g_bluredItemList = new List();
 			+ "&page_h=" + $(document).height() + "&firstwordY=" + fistWordY
 			+ "&lastwordY=" + lastWordY + "&headlineY=" +headlineY;
 		
-		console.log(url);
 		ajaxRequest(url);
 	}
 
@@ -275,7 +277,8 @@ var g_bluredItemList = new List();
 	/**
 		To log unblur action
 	*/
-	function recordUnBlurEvent(event) {
+	function recordUnBlurEvent(event,id) {
+		var content_text = getTextsBtnWords(g_lastUnbluredId,id);
 		var dataObj = {
 			'Type' : 'unblur',
 			'ClientX':event.clientX,
@@ -284,8 +287,12 @@ var g_bluredItemList = new List();
 			'ScreenY':event.screenY,
 			'PageX':event.pageX,
 			'PageY':event.pageY,
+			'Contents':content_text,
 		}
 		processRawData(dataObj);
+
+		//remember this id for next unblur action
+		g_lastUnbluredId = id;
 		//processRawData('unblur',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 		return false;
 	}
@@ -317,6 +324,7 @@ var g_bluredItemList = new List();
 			}
 			
 			var spanArray;
+			
 			for(var i=0;i<pObj.length;i++) {
 				spanArray = $(pObj.paras[i]).children('span')
 				
@@ -355,4 +363,40 @@ var g_bluredItemList = new List();
 		var fullURL = WEB_SERVICE_URL + "?type=create&user_name=" + encodeURIComponent(name.trim());
 		ajaxRequest(fullURL);
 		alert("Thanks " + name + "!, please start reading");
+	}
+
+
+	/**
+		This function returns texts between two word spans identifed by 
+		ids.
+	**/
+	function getTextsBtnWords(firstId,secondId) {
+		//handle the situation when firstId is empty
+		if(!firstId)
+			return "";
+		var res = "";
+		var ele = document.getElementById(firstId);
+		var brothers = $(ele).parent().children();
+		var matched = false;
+
+		if( firstId == $(brothers[0]).attr('id') ) { // return 1st word until the matched one
+			for(var i=0;i<brothers.length;i++) {
+				res +=  " "	+ $(brothers[i]).html();
+				if($(brothers[i]).attr('id') && $(brothers[i]).attr('id') == secondId) {
+					break;		
+				}
+			}
+		} else { // return the first word until end of the paragraph
+			for(var i=0;i<brothers.length;i++) {
+				if($(brothers[i]).attr('id') && $(brothers[i]).attr('id') == firstId) {
+					matched = true;		
+				}
+				if(matched)
+					res += 	" " + $(brothers[i]).html();
+			}
+
+			// add a paragraph tag
+			res += " [paragraph]"
+		}
+		return res;
 	}
