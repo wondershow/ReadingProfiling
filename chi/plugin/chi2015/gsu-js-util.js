@@ -236,18 +236,21 @@ function getWindowRange() {
 	its text.
 **/
 function blurElement(ele) {
-	$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
-	var eleId = 'blrEle' + Math.floor(Math.random()*100000);
-	$(ele).attr('id',eleId);
-	$(ele).mouseover(function(event){
-		
-
-		//user an if statement to filter scroll action which could have accidentally unblurred an element
-		if(event.clientY != lastCursorPos.clientY) {
-			
-			unBlurElement(eleId);
-		}
-	});
+	if($(ele).html()) {
+		$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
+		var eleId = 'blrEle' + Math.floor(Math.random()*1000000);
+		//save this element id into the global linked list
+		g_bluredItemList.add(eleId);
+		console.log("html: '" + $(ele).html()  + "'  ,id=" + eleId);
+		//console.log("Adding ID : " + eleId);
+		$(ele).attr('id',eleId);
+		$(ele).mouseover(function(event){
+		//use an if statement to filter scroll action which could have accidentally unblurred an element
+			if(event.clientY != lastCursorPos.clientY) {
+				unBlurElement(eleId);
+			}
+		});
+	}
 }
 
 /**
@@ -256,22 +259,31 @@ function blurElement(ele) {
 	confirm end of reading
 **/
 function blurLastSpan(ele) {
-	$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
-	var eleId = 'blrEle' + Math.floor(Math.random()*100000);
-	$(ele).attr('id',eleId);
-	$(ele).mouseover(function(event){
-		//alert(eleId);
-		unBlurLastSpan(eleId);
-	});
+	if($(ele).html()) {
+		$(ele).css({'color': 'transparent','text-shadow' : '0 0 5px rgba(0,0,0,0.5)'});
+		var eleId = 'blrEle' + Math.floor(Math.random()*100000);
+		g_bluredItemList.add(eleId);
+		$(ele).attr('id',eleId);
+		console.log("bluring last element, its id is " + eleId);
+		$(ele).mouseover(function(event){
+			unBlurLastSpan(eleId);
+		});
+	}
 }
-
 
 /**
 	To unblur last word and pop up a messge asking user to 
 	confirm end of reading
 **/
 function unBlurLastSpan(spanId) {
-	unBlurElement(spanId);
+	/*
+	console.log("unbluring last element");
+	if (g_bluredItemList.start.data != spanId)
+		return;
+	else
+		g_bluredItemList.delete(spanId);
+
+	unBlurElement(spanId);*/
 	
 	var span = document.getElementById(spanId);
 	var offset = $(span).offset.top;
@@ -287,16 +299,23 @@ function unBlurLastSpan(spanId) {
 		blurLastSpan(span);
 		alert("Then please keep reading");
 	}
-
-	
 }
-
-
 
 /**
 	To remove the blur effect of an element.
 **/
 function unBlurElement(id) {
+	var ele1 = document.getElementById(id);
+	var ele2 = document.getElementById(g_bluredItemList.start.data);
+	console.log("I am trying to delete " + id + ", the head id is " +g_bluredItemList.start.data 
+			+ "first content is '" + $(ele1).html() +  "'"
+		    + "secod content is '" + $(ele2).html() +  "'")	
+	if (g_bluredItemList.start.data != id)
+		return;
+	else
+		g_bluredItemList.delete(id);
+	console.log("new head id is :" + g_bluredItemList.start.data);
+
 	//alert("id = " + id);
 	var ele = document.getElementById(id);
 	//var ele = $('#'+id);
@@ -306,19 +325,6 @@ function unBlurElement(id) {
 	$(ele).css('color', '').css('text-shadow', '');
 	$(ele).click(recordUnBlurEvent(event));
 }
-
-
-/**
-	This function 
-*/
-function detectScroll() {
-
-
-
-}
-
-
-
 
 function cloneEventObj(eventObj, overrideObj){
 
@@ -335,7 +341,6 @@ function cloneEventObj(eventObj, overrideObj){
     return new EventCloneFactory(overrideObj);
 
 }
-
 
 /**
 To send a request to remote server by ajax

@@ -57,6 +57,10 @@ var lastWordY;
 var fistWordY;
 var headlineY;
 
+
+var g_bluredItemList = new List();
+
+
 	chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 		switch(message.type) {
 			case "colors-div":
@@ -108,12 +112,8 @@ var headlineY;
 			var deltaOffset = $(window).scrollTop() - pageHeadObj.pageHeadY;
 			var deltaTime = curTimeStamp -  pageHeadObj.timeStamp;
 			
-
 			console.log("real Scroll detected: y Delta = " + deltaOffset + ", timeDelta = " +deltaTime 
 				+ ",From:" + pageHeadObj.pageHeadY + "To: " + $(window).scrollTop());
-
-			
-			
 
 			var dataObj = {
 				'Type' : 'scroll',
@@ -128,7 +128,6 @@ var headlineY;
 			pageHeadObj.pageHeadY = $(window).scrollTop();
 			pageHeadObj.timeStamp = curTimeStamp;
 		}
-
 	}
 
 	/**
@@ -157,13 +156,6 @@ var headlineY;
 		//processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 		return false;
 	}
-
-	Date.prototype.yyyymmdd = function() {
-	   var yyyy = this.getFullYear().toString();
-	   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-	   var dd  = this.getDate().toString();
-	   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
-	};
 
 	/*
 		To update lastCursor position
@@ -327,7 +319,13 @@ var headlineY;
 			var spanArray;
 			for(var i=0;i<pObj.length;i++) {
 				spanArray = $(pObj.paras[i]).children('span')
+				
+				//blur first word
 				blurElement(spanArray[0]);
+
+				var randIndex = Math.floor((Math.random() * (pObj.length-1)) + 1)
+				blurElement(spanArray[randIndex]);
+
 				//unBlurElement(spanArray[0]);
 				//alert($(spanArray[0]).html());
 			}

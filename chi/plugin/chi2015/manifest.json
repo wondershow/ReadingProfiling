@@ -28,7 +28,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["jquery-2.1.1.js","jquery-ui.js","content.js","gsu-js-util.js","jquery.lettering.js","jquery.qtip.js"],
+      "js": ["jquery-2.1.1.js","jquery-ui.js","gsu-js-ds.js","content.js","gsu-js-util.js","jquery.lettering.js","jquery.qtip.js"],
       "css": [ "jquery.css","jquery-ui.css","gsu-ui.css","jquery.qtip.css"]
     }
   ],
