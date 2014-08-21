@@ -269,7 +269,7 @@ var g_lastUnbluredId = undefined;
 			'PageY':event.pageY,
 		}
 		processRawData(dataObj);
-
+		//console.log("Click ClientX=" + event.clientX + ",ClientY="+ event.clientY + ",PageX=" +event.pageX + ",PageY=" + event.pageY);
 		//processRawData('click',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 		return false;
 	}
@@ -289,6 +289,7 @@ var g_lastUnbluredId = undefined;
 			'PageY':event.pageY,
 			'Contents':content_text,
 		}
+		//console.log("Unblur ClientX=" + event.clientX + ",ClientY="+ event.clientY + ",PageX=" +event.pageX + ",PageY=" + event.pageY);
 		processRawData(dataObj);
 
 		//remember this id for next unblur action
@@ -365,6 +366,21 @@ var g_lastUnbluredId = undefined;
 		alert("Thanks " + name + "!, please start reading");
 	}
 
+	/**
+		To save every single word in the article.
+	**/
+	function getWordInArticle(ele) {
+		var position = $(ele).offset();
+
+		var dataObj = {
+			'Type' : 'word',
+			'ScreenX':position.left,
+			'ScreenY':position.top,
+			'Contents':$(ele).html(),
+		}
+		processRawData(dataObj);
+	}
+
 
 	/**
 		This function returns texts between two word spans identifed by 
@@ -379,13 +395,17 @@ var g_lastUnbluredId = undefined;
 		var brothers = $(ele).parent().children();
 		var matched = false;
 
+
+
 		if( firstId == $(brothers[0]).attr('id') ) { // return 1st word until the matched one
 			for(var i=0;i<brothers.length;i++) {
 				res +=  " "	+ $(brothers[i]).html();
 				if($(brothers[i]).attr('id') && $(brothers[i]).attr('id') == secondId) {
-					break;		
+					break;
 				}
 			}
+			for(var i=0;i<brothers.length;i++) 	
+				getWordInArticle(brothers[i]);
 		} else { // return the first word until end of the paragraph
 			for(var i=0;i<brothers.length;i++) {
 				if($(brothers[i]).attr('id') && $(brothers[i]).attr('id') == firstId) {
