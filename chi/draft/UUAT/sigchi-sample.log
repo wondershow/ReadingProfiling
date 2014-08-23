@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.5.22)  14 AUG 2014 18:54
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.5.22)  22 AUG 2014 22:51
 entering extended mode
 **C:/Users/aniu-lei/Documents/GitHub/Repo/hci_1/chi/draft/UUAT/sigchi-sample.te
 x
@@ -502,52 +502,56 @@ Missing character: There is no ™ in font ptmr7t!
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
-<pictures/preferred_reigon.png, id=65, 769.87625pt x 368.37625pt>
+<pictures/preferred_reigon.png, id=69, 769.87625pt x 368.37625pt>
 File: pictures/preferred_reigon.png Graphic file (type png)
 
 <use pictures/preferred_reigon.png>
-Package pdftex.def Info: pictures/preferred_reigon.png used on input line 157.
+Package pdftex.def Info: pictures/preferred_reigon.png used on input line 161.
 (pdftex.def)             Requested size: 243.98238pt x 116.74174pt.
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-<pictures/scroll.png, id=66, 599.23875pt x 282.05376pt>
+<pictures/scroll.png, id=70, 599.23875pt x 282.05376pt>
 File: pictures/scroll.png Graphic file (type png)
 
 <use pictures/scroll.png>
-Package pdftex.def Info: pictures/scroll.png used on input line 190.
+Package pdftex.def Info: pictures/scroll.png used on input line 192.
 (pdftex.def)             Requested size: 365.97356pt x 172.26341pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.208 \end{equation}
-                     [2 <C:/Users/aniu-lei/Documents/GitHub/Repo/hci_1/chi/draf
-t/UUAT/pictures/preferred_reigon.png>]
-<pictures/single_click.png, id=99, 217.81375pt x 264.99pt>
+l.208 
+       [2 <C:/Users/aniu-lei/Documents/GitHub/Repo/hci_1/chi/draft/UUAT/picture
+s/preferred_reigon.png>]
+<pictures/single_click.png, id=101, 217.81375pt x 264.99pt>
 File: pictures/single_click.png Graphic file (type png)
 
 <use pictures/single_click.png>
-Package pdftex.def Info: pictures/single_click.png used on input line 229.
+Package pdftex.def Info: pictures/single_click.png used on input line 232.
 (pdftex.def)             Requested size: 170.78691pt x 207.775pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/neighbor-scroll.png, id=101, 434.62375pt x 515.9275pt>
+
+LaTeX Warning: Reference `eg:4' on page \thepage  undefined on input line 239.
+
+<pictures/neighbor-scroll.png, id=103, 434.62375pt x 515.9275pt>
 File: pictures/neighbor-scroll.png Graphic file (type png)
 
 <use pictures/neighbor-scroll.png>
-Package pdftex.def Info: pictures/neighbor-scroll.png used on input line 244.
+Package pdftex.def Info: pictures/neighbor-scroll.png used on input line 247.
 (pdftex.def)             Requested size: 219.58264pt x 260.66335pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/contexts-in-points.png, id=105, 291.0875pt x 174.6525pt>
+File: pictures/contexts-in-points.png Graphic file (type png)
+
+<use pictures/contexts-in-points.png>
+Package pdftex.def Info: pictures/contexts-in-points.png used on input line 259
+.
+(pdftex.def)             Requested size: 219.58264pt x 131.75122pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -558,40 +562,46 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.39 
+l.19 
       [3 <C:/Users/aniu-lei/Documents/GitHub/Repo/hci_1/chi/draft/UUAT/pictures
 /scroll.png> <C:/Users/aniu-lei/Documents/GitHub/Repo/hci_1/chi/draft/UUAT/pict
 ures/single_click.png>])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 252.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 274.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.252 \end{document}
-                     [4
-
- <C:/Users/aniu-lei/Documents/GitHub/Repo/hci_1/chi/draft/UUAT/pictures/neighbo
-r-scroll.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 252.
+l.274 \end{document}
+                     [4 <C:/Users/aniu-lei/Documents/GitHub/Repo/hci_1/chi/draf
+t/UUAT/pictures/neighbor-scroll.png> <C:/Users/aniu-lei/Documents/GitHub/Repo/h
+ci_1/chi/draft/UUAT/pictures/contexts-in-points.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 274.
 
 (C:\Users\aniu-lei\Documents\GitHub\Repo\hci_1\chi\draft\UUAT\sigchi-sample.aux
 )
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 252.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 252.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 274.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 274.
 Package rerunfilecheck Info: File `sigchi-sample.out' has not changed.
-(rerunfilecheck)             Checksum: FC6BBA3E4D2F3E6E8DCF0F3C55489F6F;357.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 252.
+(rerunfilecheck)             Checksum: A6F4A47F11B1376B97C575DF14391688;428.
+
+
+LaTeX Warning: There were undefined references.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 274.
  ) 
 Here is how much of TeX's memory you used:
- 6294 strings out of 493921
- 91803 string characters out of 3144867
- 179360 words of memory out of 3000000
- 9435 multiletter control sequences out of 15000+200000
+ 6305 strings out of 493921
+ 92037 string characters out of 3144867
+ 179333 words of memory out of 3000000
+ 9442 multiletter control sequences out of 15000+200000
  30476 words of font info for 70 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  42i,10n,30p,2809b,417s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{section*.9} has been referenced but does not exis
-t, replaced by a fixed one
+pdfTeX warning (dest): name{section*.10} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{section*.9} has been referenced but does not exist,
+ replaced by a fixed one
 
 pdfTeX warning (dest): name{section*.6} has been referenced but does not exist,
  replaced by a fixed one
@@ -614,9 +624,9 @@ ts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
 /urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/
 utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb
 >
-Output written on sigchi-sample.pdf (4 pages, 771201 bytes).
+Output written on sigchi-sample.pdf (4 pages, 818107 bytes).
 PDF statistics:
- 159 PDF objects out of 1000 (max. 8388607)
- 33 named destinations out of 1000 (max. 500000)
- 69 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 167 PDF objects out of 1000 (max. 8388607)
+ 36 named destinations out of 1000 (max. 500000)
+ 82 words of extra memory for PDF output out of 10000 (max. 10000000)
 

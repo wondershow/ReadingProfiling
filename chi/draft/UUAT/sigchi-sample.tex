@@ -67,7 +67,7 @@ breaklinks=true,
 % End of preamble. Here it comes the document.
 \begin{document}
 
-\title{From Up or Down: Locating Habitual Reading Region by UnIntrusive Attention Tracking}
+\title{What you have read  and what you need to read: understaning daily learning process}
 
 \numberofauthors{3}
 \author{
@@ -140,16 +140,20 @@ Compared to eye-tracking method, our proposed research is closer to the method o
 By literature review we distinguish our research from existing works as follows: the data collection in our research is designed to be more scalable, so our data collection method can be tagged as "unintrusive", unlike the eye-gaze technology adopted in \cite{navalpakkam2012mouse,lagun2011viewser}. Meanwhile our goal is personal data collection instead of usability test, we proposed a new CHI technology to accurately infer user’s preferred reading range on the screen, so that we can collect high quality data that can describe a user’s daily reading behavior objectively. 
 
 
-\section{The Assumption, Model }
-\subsection{Model}
+\section{Where do you read?}
+To understand  online reading in an inattentive way, it is necessary to determine a user's Reading Range(RR). A Reading Range is defined as
+the screen area where a user's reading attention covers. Only those texts in the  RR are possibly read and learnt by a user. In this section we 
+will first model RR and introduce our method to compute behavioral RR and realtime RR.
+
+
+\subsection{Model of Reading Range}
 
 The previous research on user attention tracking \cite{buscher2010eye} have disclosed some facts when a user is doing daily reading on 
 articles or document papers. Vertically, in most of the time, the reading progresses towards the end of the screen  in a line-by-line manner. 
-However, the reading does not start from the first line on the screen until the last line of the screen. Generally, a user has a preferred reading region on screen,
-as indicated in figure \ref{fig:read_region}. A preferred reading region can be identified by two parameters $\Delta_0$ and $w$. $\Delta_0$  indicates the 
-offset from the head of the screen and $w$ indicates the vertical width of the whole region. If a user wants to read the contents outside the region,
+However, the reading does not start from the first line on the screen until the last line of the screen. Generally, a user has a preferred reading range on screen, which in this paper, 
+we name it as behavioral RR(BRR), as indicated in figure \ref{fig:read_region}. A BRR can be identified by two parameters $\Delta_0$ and $w$. $\Delta_0$  indicates the 
+offset from the head of the screen and $w$ indicates the vertical span of the whole region. If a user wants to read the contents outside the RR,
 a scroll action is expected. In this research, we take aforementioned assumption and model the user attention range as displayed in figure \ref{fig:read_region}. 
-
 
 
 \begin{figure}[!h]
@@ -159,30 +163,28 @@ a scroll action is expected. In this research, we take aforementioned assumption
 \label{fig:read_region}
 \end{figure}
 
-
-
 Taking this model into consideration, our next  research question is: 
-What behavioral data should be collected and analyzed?
-
+What behavioral data should be collected and analyzed to compute RR?
 
 Eye tracking data can be easily mentioned to answer the question, especially when a "visual" reading range is 
 the goal. However, we argue that the eye tracking data has twofold major drawbacks: 1. The eye tracking collection 
 requires extra hardware, which means the eye tracking  based solution  is not scalable and very costly. 2. What is even worse, 
 eye tracking is "intrusive". A subject person is aware that he is wearing a headset device and he is under a camera coverage, 
 his behavior is very likely to be different from how he behaves when he is doing reading alone. For these two reasons, we 
-can not use eye tracking data. To meet the requirement of unintrusive but objective, the only option left is the user interaction data 
-collected when the reading is ongoing.  In the next section we will discuss how to 
-collect and analyze user interaction data to get the user preferred region.  
+can not use eye tracking data. To meet the requirement of inattentive but objective, the only option left is the user interaction data 
+collected when the reading is ongoing.  In the next subsection we will discuss how to collect and analyze user
+ interaction data to get the user preferred region.
 
 
-\subsection{Calculating User Preferred Region by Interaction Data}
+\subsection{Calculating BRR by Interaction Data}
 
 When a user is doing daily reading,  since the keyboard input rarely happens 
 during the reading process,  we are more interested in the mouse-generated data. 
-There are two categories of mouse-generated data, mouse click and scroll.  We consider the mouse-generated data to be 
+There are two categories of mouse-generated data, mouse move(mouse click) and scroll.  We consider the mouse-generated data to be 
 informational  behavioral data. To be specific, a  mouse click indicates the position of user's reading attention at that time instant, 
-a page scroll indicates how much contents has been moved out of reading region. Our next question is how to infer 
-preferred reading region by collected mouse-generated data. 
+a page scroll indicates how much contents has been moved out of reading region.
+In this subsection, we answer the question of how to infer 
+BRR by  mouse-generated data. 
 
 
 \begin{figure*}[t]
@@ -193,7 +195,8 @@ preferred reading region by collected mouse-generated data.
 \end{figure*}
 
 Now we examine a typical online reading event, during which a user finishes reading of a whole article. We suppose 
- the article is relatively long, which requires many scroll action. The whole reading process can be illustrated by figure \ref{fig:scroll}
+ the article is relatively long, which requires many scroll action. 
+The whole reading process can be illustrated by figure \ref{fig:scroll}
 
 
 In figure \ref{fig:scroll}, a user conducts a scroll action when he finishes reading contents of current reading region. 
@@ -216,7 +219,7 @@ however, equation (\ref{eq:1}) can still be applied.
 \end{equation}
 
 
-Now that equation (\ref{eq:2}) does not always hold, if the variance of $\Delta_i$ is relatively large(actually it is),
+Since equation (\ref{eq:2}) does not always hold, if the variance of $\Delta_i$ is relatively large(actually it is),
 we need to consider the question how to infer user reading  region on each single scroll. Figure \ref{fig:single_click}
 displays a the events happened during  reading between two scroll actions. Here red dots are collected mouse click data with
 the position on the corresponding place on the screen. Since we take the assumptions that the reading process progresses 
@@ -233,7 +236,7 @@ $w_i^{\min }$, which can be identified by highest click and lowest click(as indi
 
 However, $w_i^{\min }$ is a minimum approximate of $w_i$, we can have a more accurate approximate if we take the neighboring 
 scroll actions into consideration. In figure \ref{fig:neighbor_scroll}, we put the click data both before $i$th scroll(purple dots) and after $i+1$th(yellow dots).
-We can see there is a gap between two neighbor minimum approximates. So we can have a moderate estimate of $w_i$:
+We can see there is a gap between two neighbor minimum approximates($g1$ and $g2$ in figure\ref{eg:4}). So we can have a moderate estimate of $w_i$:
 
 \begin{equation} \label{eq:4}
 {w_i} = w_i^{\min } + ({g_1} + {g_2})/2
@@ -245,6 +248,28 @@ We can see there is a gap between two neighbor minimum approximates. So we can h
 \caption{Mouse click and reading region}
 \label{fig:neighbor_scroll}
 \end{figure}
+
+\section{ What and to what extent you have read}
+Once we compute the BRR and RRR, we can conduct reading contents collection. In order to formulate our solutions here, we introduce the following 
+notations. Given two points $p_1(x_1,y_1)$ $p_2(x_2,y_2)$  on a screen at time instant $t$, the context identified by the two points can be 
+notated as : $C(p_1,p_2)$, which is indicated as yellow background texts in figure \ref{fig:context_points}. The corresponding time spent reading  
+this context is $T(p_1,p_2)$.  
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.9\columnwidth]{pictures/contexts-in-points}
+\caption{Contexts between points}
+\label{fig:context_points}
+\end{figure}
+
+For each $w_i$, $p_s$ is defined as the left top point of that screen area, $p_e$ is defined as the right bottom point of that screen area. Intuitively, 
+we can have the reading time of  this screen $T(w_i)$ as follows:
+
+
+$C(p_1,p_2)$
+
+
+
 
 
 \bibliographystyle{acm-sigchi}
