@@ -42,7 +42,7 @@ function getHeadLine()
 										}
 
 									}
-		).each( 
+		).each(
 			function()
 			{
 				//alert($(this).css('font-size')+", text = " + $(this).text());
@@ -278,11 +278,12 @@ function unBlurLastSpan(spanId) {
 
 	var r = confirm("Have you finished reading this article?");
 	if (r == true) {
-		alert("Thank you very much!");
+		unBlurElement(spanId)
 		sendBasicSettings();
 		$(span).mouseover(function(event){});
 		sendJSONData();
 		ifReadingOver = true;
+		alert("Thank you very much!");
 	} else {
 		blurLastSpan(span);
 		alert("Then please keep reading");

@@ -363,7 +363,7 @@ var g_lastUnbluredId = undefined;
 		var name = prompt("Can you please tell us your name? ");
 		var fullURL = WEB_SERVICE_URL + "?type=create&user_name=" + encodeURIComponent(name.trim());
 		ajaxRequest(fullURL);
-		alert("Thanks " + name + "!, please start reading");
+		//alert("Thanks " + name + "!, please start reading");
 	}
 
 	/**
