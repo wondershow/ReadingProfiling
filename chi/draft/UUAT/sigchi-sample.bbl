@@ -4,6 +4,12 @@
 {Patients Like Me}, howpublished = {\url{http://www.patientslikeme.com/}}, note
   = {Accessed: 2010-09-30}.
 
+\bibitem{atterer2008heatmap}
+Atterer, R., and Lorenzi, P.
+\newblock A heatmap-based visualization for navigation within large web pages.
+\newblock In {\em Proceedings of the 5th Nordic conference on Human-computer
+  interaction: building bridges}, ACM (2008), 407--410.
+
 \bibitem{atterer2007tracking}
 Atterer, R., and Schmidt, A.
 \newblock Tracking the interaction of users with ajax applications for
@@ -11,11 +17,29 @@ Atterer, R., and Schmidt, A.
 \newblock In {\em Proceedings of the SIGCHI conference on Human factors in
   computing systems}, ACM (2007), 1347--1350.
 
+\bibitem{berry1997data}
+Berry, M.~J., and Linoff, G.
+\newblock {\em Data mining techniques: for marketing, sales, and customer
+  support}.
+\newblock John Wiley \& Sons, Inc., 1997.
+
 \bibitem{buscher2010eye}
 Buscher, G., Biedert, R., Heinesch, D., and Dengel, A.
 \newblock Eye tracking analysis of preferred reading regions on the screen.
 \newblock In {\em CHI'10 Extended Abstracts on Human Factors in Computing
   Systems}, ACM (2010), 3307--3312.
+
+\bibitem{celsi1988role}
+Celsi, R.~L., and Olson, J.~C.
+\newblock The role of involvement in attention and comprehension processes.
+\newblock {\em Journal of consumer research\/} (1988), 210--224.
+
+\bibitem{hornbaek2003reading}
+Hornb{\ae}k, K., and Fr{\o}kj{\ae}r, E.
+\newblock Reading patterns and usability in visualizations of electronic
+  documents.
+\newblock {\em ACM Transactions on Computer-Human Interaction (TOCHI) 10}, 2
+  (2003), 119--149.
 
 \bibitem{huang2011no}
 Huang, J., White, R.~W., and Dumais, S.
@@ -23,12 +47,6 @@ Huang, J., White, R.~W., and Dumais, S.
   improve search.
 \newblock In {\em Proceedings of the SIGCHI Conference on Human Factors in
   Computing Systems}, ACM (2011), 1225--1234.
-
-\bibitem{jacob2003eye}
-Jacob, R.~J., and Karn, K.~S.
-\newblock Eye tracking in human-computer interaction and usability research:
-  Ready to deliver the promises.
-\newblock {\em Mind 2}, 3 (2003), 4.
 
 \bibitem{lagun2011viewser}
 Lagun, D., and Agichtein, E.
@@ -43,6 +61,11 @@ Navalpakkam, V., and Churchill, E.
   web-based content.
 \newblock In {\em Proceedings of the SIGCHI Conference on Human Factors in
   Computing Systems}, ACM (2012), 2963--2972.
+
+\bibitem{nielsen2010eyetracking}
+Nielsen, J., and Pernice, K.
+\newblock {\em Eyetracking web usability}.
+\newblock New Riders, 2010.
 
 \bibitem{ozzie2011personal}
 Ozzie, R.~E., Gates~III, W.~H., Flake, G.~W., Bergstraesser, T.~F., Blinn,
