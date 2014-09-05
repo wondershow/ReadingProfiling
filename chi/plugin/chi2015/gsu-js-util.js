@@ -281,12 +281,30 @@ function unBlurLastSpan(spanId) {
 		unBlurElement(spanId)
 		sendBasicSettings();
 		$(span).mouseover(function(event){});
+		sendArticle();
+		console.log("before flush!!!")
 		sendJSONData();
 		ifReadingOver = true;
+		console.log("We have " + g_totalDataLength +" data items collected!");
 		alert("Thank you very much!");
+		
 	} else {
 		blurLastSpan(span);
 		alert("Then please keep reading");
+	}
+}
+
+function sendArticle() {
+
+	for(var i=0;i<g_para_arr.length;i++) {
+		//console.log("");
+		var para = g_para_arr[i];
+		for(var j=0; j<para.length; j++) {
+			if(para[j] != undefined)
+				getWordInArticle(para[j],false);
+			//getWordInArticle();
+		}
+		sendPlainText("[paragraph"+ (i+1) +"]");
 	}
 }
 
@@ -295,15 +313,16 @@ function unBlurLastSpan(spanId) {
 **/
 function unBlurElement(id) {
 	
+	/**If you want to let the unblur happens one after another, just uncomment the following code*/
+	/*
 	if (g_bluredItemList.start.data != id)
 		return;
 	else
-		g_bluredItemList.delete(id);
-
+		g_bluredItemList.delete(id);*/
+	
 	var ele = document.getElementById(id);
 	$(ele).css('color', '').css('text-shadow', '');
 	$(ele).click(recordUnBlurEvent(event,id));
-
 }
 
 function cloneEventObj(eventObj, overrideObj){

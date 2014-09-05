@@ -3,7 +3,7 @@ var origBorder = "";
 var HEADLINE_TOOLIP_ID = 'headline_toolip';
 var ifReadingOver = false;
 //jsonSendObjArr is for data exchange use
-var MAX_SENDOBJ_LENGTH = 200;
+var MAX_SENDOBJ_LENGTH = 20000;
 var OBJ_ARR_LENGTH = 5;
 var jsonSendObjArr = {};
 jsonSendObjArr.objList = [];
@@ -37,7 +37,7 @@ userDataObjArr.dataLength = 0;
 userDataObjArr.cursorLength = 0; 
 
 //For display use
-var totalDataLength = 0;
+var g_totalDataLength = 0;
 
 
 /**
@@ -61,8 +61,8 @@ var headlineY;
 var g_bluredItemList = new List();
 var g_lastUnbluredId = undefined;
 
-
-
+//to hold each paragrah of article
+var g_para_arr = [];
 
 	chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 		switch(message.type) {
@@ -125,7 +125,7 @@ var g_lastUnbluredId = undefined;
 				'YDelta':deltaOffset,
 			}
 
-			processRawData(dataObj);
+			processRawData(dataObj,true);
 
 			pageHeadObj.pageHeadY = $(window).scrollTop();
 			pageHeadObj.timeStamp = curTimeStamp;
@@ -138,6 +138,7 @@ var g_lastUnbluredId = undefined;
 	function showMouseScroll(event) {
 		var curTimeStamp = new Date().getTime();
 		lastScrollTimeStamp = curTimeStamp;
+		console.log("Normal scroll detected")
 		setTimeout(detectUserScroll,SCROLL_TIMESPAN);
 	}
 
@@ -154,7 +155,7 @@ var g_lastUnbluredId = undefined;
 			'PageX':event.pageX,
 			'PageY':event.pageY,
 		}
-		processRawData(dataObj);
+		processRawData(dataObj,true);
 		//processRawData('mouse',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 		return false;
 	}
@@ -175,7 +176,7 @@ var g_lastUnbluredId = undefined;
 		Send data to remote server if necessary.
 	***/
 	//function processRawData(type,clientX,clientY,screenX,screenY,pageX,pageY) {
-	function processRawData(dataObj) {
+	function processRawData(dataObj,ifCursor) {
 		var timestamp = new Date().getTime();
 		var date = new Date(timestamp);
 		//console.log("timestamp = " + timestamp + ", ");
@@ -184,6 +185,7 @@ var g_lastUnbluredId = undefined;
 		
 		dataObj.Timestamp = timestamp + "s";
 		dataObj.Date = dateString;
+		
 		/*
 		//console.log("timestamp = " + timestamp + ", dateString = " + dateString);
 		var new_obj = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
@@ -193,11 +195,13 @@ var g_lastUnbluredId = undefined;
 		var new_obj1 = {'Timestamp':timestamp+'s','Date':dateString,'Type':type, 'ClientX':clientX, 
 					   'ClientY':clientY, 'ScreenX':screenX,'ScreenY':screenY,'PageX':pageX,'PageY':pageY};
 		*/
-		updateLastCursor(dataObj.ClientX,dataObj.ClientY,dataObj.PageX,dataObj.PageY);
+		if(ifCursor)
+			updateLastCursor(dataObj.ClientX,dataObj.ClientY,dataObj.PageX,dataObj.PageY);
 		
-	
+		
+		g_totalDataLength++;
 
-		totalDataLength++;
+		dataObj.index = g_totalDataLength;
 
 		//Put data into front-end storage Array
 		//userDataObjArr.dataList.push(new_obj1);
@@ -209,9 +213,9 @@ var g_lastUnbluredId = undefined;
 		
 		//when necessary, send the data.
 		if(jsonSendObjArr.objList[curItemIndex].dataList.length >= MAX_SENDOBJ_LENGTH) {
-			console.log("send json data, totalDataLength = " + totalDataLength + ", curItemIndex = " 
+			console.log("send json data, g_totalDataLength = " + g_totalDataLength + ", curItemIndex = " 
 						+ curItemIndex + ", len = " + jsonSendObjArr.objList[curItemIndex].dataList.length);
-			console.log("Length of array is " + totalDataLength);
+			console.log("Length of array is " + g_totalDataLength);
 			jsonSendObjArr.curItem = (jsonSendObjArr.curItem + 1) % OBJ_ARR_LENGTH;
 			sendJSONData();
 		}
@@ -268,7 +272,7 @@ var g_lastUnbluredId = undefined;
 			'PageX':event.pageX,
 			'PageY':event.pageY,
 		}
-		processRawData(dataObj);
+		processRawData(dataObj,true);
 		//console.log("Click ClientX=" + event.clientX + ",ClientY="+ event.clientY + ",PageX=" +event.pageX + ",PageY=" + event.pageY);
 		//processRawData('click',event.clientX,event.clientY,event.screenX,event.screenY,event.pageX,event.pageY);
 		return false;
@@ -290,7 +294,7 @@ var g_lastUnbluredId = undefined;
 			'Contents':content_text,
 		}
 		//console.log("Unblur ClientX=" + event.clientX + ",ClientY="+ event.clientY + ",PageX=" +event.pageX + ",PageY=" + event.pageY);
-		processRawData(dataObj);
+		processRawData(dataObj,true);
 
 		//remember this id for next unblur action
 		g_lastUnbluredId = id;
@@ -334,7 +338,8 @@ var g_lastUnbluredId = undefined;
 
 				var randIndex = Math.floor((Math.random() * (pObj.length-1)) + 1)
 				blurElement(spanArray[randIndex]);
-
+				
+				g_para_arr[g_para_arr.length] = spanArray;
 				//unBlurElement(spanArray[0]);
 				//alert($(spanArray[0]).html());
 			}
@@ -369,7 +374,7 @@ var g_lastUnbluredId = undefined;
 	/**
 		To save every single word in the article.
 	**/
-	function getWordInArticle(ele) {
+	function getWordInArticle(ele,ifUpdate) {
 		var position = $(ele).offset();
 
 		var dataObj = {
@@ -378,7 +383,18 @@ var g_lastUnbluredId = undefined;
 			'ScreenY':position.top,
 			'Contents':$(ele).html(),
 		}
-		processRawData(dataObj);
+		processRawData(dataObj,ifUpdate);
+	}
+
+	/**
+		To send a plain text to the server.
+	**/
+	function sendPlainText(text) {
+		var dataObj = {
+			'Type' : 'word',
+			'Contents':text,
+		}
+		processRawData(dataObj,false);
 	}
 
 
@@ -404,8 +420,10 @@ var g_lastUnbluredId = undefined;
 					break;
 				}
 			}
+			/*
 			for(var i=0;i<brothers.length;i++) 	
-				getWordInArticle(brothers[i]);
+				getWordInArticle(brothers[i],false);*/
+			
 		} else { // return the first word until end of the paragraph
 			for(var i=0;i<brothers.length;i++) {
 				if($(brothers[i]).attr('id') && $(brothers[i]).attr('id') == firstId) {
