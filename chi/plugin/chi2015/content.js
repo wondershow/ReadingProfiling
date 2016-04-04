@@ -236,13 +236,13 @@ var g_para_arr = [];
 				   dataType: "json",
 				   success: function (msg) {
 					   //console.log(arguments);
-					   //alert('success')
+					   alert('success sending ajax')
 					   cleanSendObjArray(curObjIndex);
 				   },
 				   error: function(XMLHttpRequest, textStatus, errorThrown) {
 				   
 						//console.log(arguments);
-						//alert("Status: " + textStatus);
+						alert("Status: " + textStatus +  "failed sending ajax");
 						//alert("Error: " + errorThrown);
 					  cleanSendObjArray(curObjIndex);
 
@@ -328,9 +328,15 @@ var g_para_arr = [];
 				$(pObj.paras[i]).lettering('words');
 			}
 			
-			var spanArray;
+			var spanArray, spanArrayLen = 0;
 			
 			for(var i=0;i<pObj.length;i++) {
+
+				//skip those paragraphs with spaces
+				if ($(pObj.paras[i]).html().trim() == "") continue;
+				spanArrayLen++;
+
+
 				spanArray = $(pObj.paras[i]).children('span')
 				
 				//blur first word

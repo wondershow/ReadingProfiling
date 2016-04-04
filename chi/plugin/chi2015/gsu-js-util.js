@@ -155,18 +155,21 @@ function paragrahsObj() {
 function getParagraphs(titleEl) {
 
 	var stop = false;
-	var ele = titleEl;
+	var ele = titleEl[0];
 
 	//We suppose that the paragraph and title are under same ancestor
-	//So we search upwards until find first ancestor that has an <p> 
+	//So we search upwards until find first ancestor that its class name is "l-container"
 	//tag as its offspring
-	while($(ele).find( "p" ).length == 0) {
-		ele = $(ele).parent();
+	while($(ele).attr("class") != "l-container") {
+		console.log("what am i doing");
+		ele = $(ele).parent()[0];
+
 	}
 	
-	var pArr = $.makeArray( $(ele).find( "p" ) );
+	var pArr = $.makeArray( $(ele).find("div.zn-body__paragraph") );
 
 
+	/*
 	var fontStyle = getMainFontClass(pArr);
 
 	var fontStlArr = fontStyle.split(',');
@@ -186,7 +189,18 @@ function getParagraphs(titleEl) {
 			res.paras[count++] = $(this);
 			//return true;
 		}
-	});
+	});*/
+	var i;
+	var res = new paragrahsObj();
+	var count = 0;
+	for (i = 0; i < pArr.length; i++) {
+		text = $(pArr[i]).html();
+		text = text.trim();
+		if (text == "") continue;
+		$(pArr[i]).html(text);
+		res.paras[count++] = pArr[i];
+	}
+
 
 	res.length = count;
 

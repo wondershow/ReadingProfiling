@@ -1,9 +1,13 @@
 // omnibox
+
+/*
 chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
 	suggest([
 	  {content: "color-divs", description: "Make everything red"}
 	]);
 });
+*/
+
 chrome.omnibox.onInputEntered.addListener(function(text) {
 	if(text == "color-divs") colorDivs();
 });
@@ -13,7 +17,7 @@ chrome.omnibox.onInputEntered.addListener(function(text) {
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.type) {
         case "color-divs":
-			alert('start');
+			alert('zcd is aaaa pig!!!!!');
             colorDivs();
         break;
     }
@@ -37,7 +41,8 @@ var colorDivs = function() {
 	chrome.tabs.getSelected(null, function(tab){
 	    chrome.tabs.sendMessage(tab.id, {type: "colors-div", color: "#F00"});
 	    // setting a badge
-		chrome.browserAction.setBadgeText({text: "red!"});
+		//chrome.browserAction.setBadgeText({text: "red!"});
+		console.log("zcd");
 	});
 }
 
