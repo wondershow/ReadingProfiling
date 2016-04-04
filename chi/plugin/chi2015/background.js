@@ -17,7 +17,7 @@ chrome.omnibox.onInputEntered.addListener(function(text) {
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.type) {
         case "color-divs":
-			alert('zcd is aaaa pig!!!!!');
+			//alert('zcd is aaaa pig!!!!!');
             colorDivs();
         break;
     }

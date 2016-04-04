@@ -161,7 +161,6 @@ function getParagraphs(titleEl) {
 	//So we search upwards until find first ancestor that its class name is "l-container"
 	//tag as its offspring
 	while($(ele).attr("class") != "l-container") {
-		console.log("what am i doing");
 		ele = $(ele).parent()[0];
 
 	}

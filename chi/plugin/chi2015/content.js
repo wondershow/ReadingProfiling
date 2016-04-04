@@ -322,11 +322,11 @@ var g_para_arr = [];
 			var pObj = getParagraphs(result);
 			var firstPara = pObj.paras[0];
 			
-			fistParaYOffset = getParaPosition(pObj.paras[0]);	
-			
 			for(var i=0;i<pObj.length;i++) {
 				$(pObj.paras[i]).lettering('words');
 			}
+
+			fistParaYOffset = getParaPosition(pObj.paras[0]);
 			
 			var spanArray, spanArrayLen = 0;
 			
@@ -340,10 +340,16 @@ var g_para_arr = [];
 				spanArray = $(pObj.paras[i]).children('span')
 				
 				//blur first word
-				blurElement(spanArray[0]);
+				var j = 0;
+				while($(spanArray[j]).html().trim() == "") j++;
+				blurElement(spanArray[j]);
 
-				var randIndex = Math.floor((Math.random() * (pObj.length-1)) + 1)
-				blurElement(spanArray[randIndex]);
+				//we blur a word every 15 words
+				var numOfWordsPerSection = 15; 
+				for (j = 0; j < spanArray.length; j += 15){
+					var randIndex = Math.floor((Math.random() * (15)) + j)
+					if (randIndex < spanArray.length) blurElement(spanArray[randIndex]);
+				}
 				
 				g_para_arr[g_para_arr.length] = spanArray;
 				//unBlurElement(spanArray[0]);
